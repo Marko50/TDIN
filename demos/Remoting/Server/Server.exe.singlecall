@@ -1,0 +1,15 @@
+<configuration>
+  <system.runtime.remoting>
+    <application name="Server">
+      <service>
+        <wellknown
+          mode="SingleCall"
+          type="Remote, RemClass"
+          objectUri="RemObj" />
+      </service>
+      <channels>
+        <channel ref="tcp server" port="9000" />
+      </channels>
+    </application>
+  </system.runtime.remoting>
+</configuration>

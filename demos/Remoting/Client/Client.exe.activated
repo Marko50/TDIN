@@ -1,0 +1,12 @@
+<configuration>
+  <system.runtime.remoting>
+    <application>
+      <client url="tcp://localhost:9000/Server">
+        <activated type="Remote, RemClass" />
+      </client>
+      <channels>
+        <channel ref="tcp client" />
+      </channels>
+    </application>
+  </system.runtime.remoting>
+</configuration>
