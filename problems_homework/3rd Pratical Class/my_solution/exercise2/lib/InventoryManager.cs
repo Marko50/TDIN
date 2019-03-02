@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 
 public class InventoryManager : MarshalByRefObject{
-    delegate void InventoryChangeHandler(Object sender, InventoryChangeArgs info);
-    private event InventoryChangeHandler InventoryChangeEvent;
+    public delegate void InventoryChangeHandler(Object sender, InventoryChangeArgs info);
+    public event InventoryChangeHandler InventoryChangeEvent;
     private Dictionary<string,int> parts;
 
     private void handler(Object sender, InventoryChangeArgs info){
         info.handler();
     }
+    
     public InventoryManager(){
         this.parts = new Dictionary<string,int>();
         this.InventoryChangeEvent += new InventoryChangeHandler(this.handler);
