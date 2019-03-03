@@ -9,13 +9,16 @@ public class InventoryChangeArgs : EventArgs {
         this.pno = p;
         this.change = ch;
     }
-    public void handler(){
-        if(this.change.Equals(0)){
-            Console.WriteLine("WARNING: You are changing part " + this.pno + " with a value = 0");
-        }
-        else{
-            Console.WriteLine("You are changing part " + this.pno + " with a value = " + this.change.ToString());
-        }
+    public void log(){
+        if(this.change > 0){
+             Console.WriteLine("Inventory of part " + this.pno + " was increased by " + this.change.ToString() + " units");
+         }
+         else if (this.change < 0){
+             Console.WriteLine("Inventory of part " + this.pno + " was decreased by " + this.change.ToString() + " units");
+         }
+         else{
+             Console.WriteLine("Inventory of part " + this.pno + " was unchanged");
+         }
     }
 
     public void watch(){

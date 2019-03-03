@@ -10,9 +10,9 @@ public class Client{
         Console.ReadLine();
         int counter = 0;
         while (counter < 10) {
-        inventoryManager.UpdateInventory("wood table_" + (counter + 1), counter*100);
-        Thread.Sleep(1000);
-        counter+=1;
+          inventoryManager.UpdateInventory("wood table_" + (counter + 1), counter*100);
+          Thread.Sleep(1000);
+          counter+=1;
       }
     }
 }

@@ -6,17 +6,14 @@ public class InventoryManager : MarshalByRefObject{
     public event InventoryChangeHandler InventoryChangeEvent;
     private Dictionary<string,int> parts;
 
-    private void handler(Object sender, InventoryChangeArgs info){
-        info.handler();
-    }
+    private void handler(Object sender, InventoryChangeArgs info){}
     
     public InventoryManager(){
         this.parts = new Dictionary<string,int>();
-        this.InventoryChangeEvent += new InventoryChangeHandler(this.handler);
     }
 
     public void UpdateInventory(string pno, int change){
-        this.InventoryChangeEvent(new Object(), new InventoryChangeArgs(pno,change));
+        this.InventoryChangeEvent(new Object(), new InventoryChangeArgs(pno, change));
         if (this.parts.ContainsKey(pno)){
             this.parts[pno] += change;
         }
