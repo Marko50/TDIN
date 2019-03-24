@@ -1,2 +1,7 @@
 *.dll
 *.exe
+/problems_homework/4th Pratical Class/1st problem/PrimeNumbersWebService/nbproject/private/
+/problems_homework/4th Pratical Class/1st problem/PrimeNumberApplication/nbproject/private/
+/problems_homework/4th Pratical Class/1st problem/PrimeNumberApplication/build/
+/problems_homework/4th Pratical Class/1st problem/PrimeNumberWebApplication/nbproject/private/
+/problems_homework/4th Pratical Class/1st problem/PrimeNumberWebApplication/build/
