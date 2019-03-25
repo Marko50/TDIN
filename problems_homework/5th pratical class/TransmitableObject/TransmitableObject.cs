@@ -2,6 +2,7 @@ using System;
 
 [Serializable]
 public class TransmitableObject{
+    public static string QUEUE_NAME = "SenderQueue";
 
     private static int count = 0;
 
@@ -28,5 +29,9 @@ public class TransmitableObject{
         this.id = count;
         count++;
         this.name = n;
+    }
+
+    public override string ToString(){
+        return "Transmitable Object no " + this.id + " with name " + this.name;
     }
 }
