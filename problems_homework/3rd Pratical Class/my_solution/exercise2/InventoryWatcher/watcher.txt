@@ -22,3 +22,33 @@ Inventory of part wood table_7 was increased by 600 units.
 Inventory of part wood table_8 was increased by 700 units.
 Inventory of part wood table_9 was increased by 800 units.
 Inventory of part wood table_10 was increased by 900 units.
+Inventory of part wood table_1 was unchanged.
+Inventory of part wood table_2 was increased by 100 units.
+Inventory of part wood table_3 was increased by 200 units.
+Inventory of part wood table_4 was increased by 300 units.
+Inventory of part wood table_5 was increased by 400 units.
+Inventory of part wood table_6 was increased by 500 units.
+Inventory of part wood table_7 was increased by 600 units.
+Inventory of part wood table_8 was increased by 700 units.
+Inventory of part wood table_9 was increased by 800 units.
+Inventory of part wood table_10 was increased by 900 units.
+Inventory of part wood table_1 was unchanged.
+Inventory of part wood table_2 was increased by 100 units.
+Inventory of part wood table_3 was increased by 200 units.
+Inventory of part wood table_4 was increased by 300 units.
+Inventory of part wood table_5 was increased by 400 units.
+Inventory of part wood table_6 was increased by 500 units.
+Inventory of part wood table_7 was increased by 600 units.
+Inventory of part wood table_8 was increased by 700 units.
+Inventory of part wood table_9 was increased by 800 units.
+Inventory of part wood table_10 was increased by 900 units.
+Inventory of part wood table_1 was unchanged.
+Inventory of part wood table_2 was increased by 100 units.
+Inventory of part wood table_3 was increased by 200 units.
+Inventory of part wood table_4 was increased by 300 units.
+Inventory of part wood table_5 was increased by 400 units.
+Inventory of part wood table_6 was increased by 500 units.
+Inventory of part wood table_7 was increased by 600 units.
+Inventory of part wood table_8 was increased by 700 units.
+Inventory of part wood table_9 was increased by 800 units.
+Inventory of part wood table_10 was increased by 900 units.
