@@ -1,17 +1,14 @@
 using System;
-
+using System.Collections.Generic;
 
 [Serializable]
 public class Order{
     public static int count = 0;
     
     private int id;
-    private string description = "Teste";
-    private int quantity = 1;
     private int destinationTable = 1;
-    private string type = "Bar";
-    private int price = 1;
-    private string state = "Ready";
+
+    List<OrderPart> orderParts = new List<OrderPart>();
 
     public int Id{
         get{
@@ -19,24 +16,6 @@ public class Order{
         }
         set{
             this.id = value;
-        }
-    }
-
-    public string Description{
-        get{
-            return this.description;
-        }
-        set{
-            this.description = value;
-        }
-    }
-    
-    public int Quantity{
-        get{
-            return this.quantity;
-        }
-        set{
-            this.quantity = value;
         }
     }
 
@@ -49,43 +28,31 @@ public class Order{
         }
     }
 
-    public string Type{
+    public List<OrderPart> OrderParts{
         get{
-            return this.type;
-        }
-        set{
-            this.type = value;
+            return this.orderParts;
         }
     }
 
-    public int Price{
-        get{
-            return this.price;
-        }
-        set{
-            this.price = value;
-        }
+    public void addOrderPart(OrderPart orderPart){
+        this.orderParts.Add(orderPart);
     }
 
-    public string State{
-        get{
-            return this.state;
-        }
-        set{
-            this.state = value;
-        }
-    }
 
     public Order(){
         this.id = count;
         count++;
+        OrderPart orderPartFirst = new OrderPart(this.id);
+        OrderPart orderPartSecond = new OrderPart(this.id);
+        orderPartSecond.Type = "Kitchen";
+        this.orderParts.Add(orderPartFirst);
+        this.orderParts.Add(orderPartSecond);
     }
 
     public override string ToString(){
-        return "Order no " + this.id + "\nDescription: " + this.description + "\nQuantity: " + this.quantity 
-        + "\nFor table: " + this.destinationTable + "\nType: " + this.type + "\nPrice: " + this.price + "\nState: " 
-        + this.state + "\r\n\r\n";
+        string ret = "";
+        foreach (OrderPart orderPart in this.orderParts)
+            ret += orderPart.ToString();
+        return "Order no " + this.id  + "\nFor table: " + this.destinationTable + "\r\n\r\n" + ret;
     }
-
-    
 }
