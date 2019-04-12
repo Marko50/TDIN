@@ -59,6 +59,14 @@ public class Order{
         return "\r\n\r\nOrder no " + this.id  + "\nFor table: " + this.destinationTable + "\r\n\r\n" + ret;
     }
 
+    public bool isReady(){
+        foreach (OrderPart orderPart in orderParts)
+            if(!orderPart.State.Equals("Ready"))
+                return false;
+                
+        return true;        
+    }
+
     public void changeOrderPartStatus(int orderPartID, string status){
         foreach (OrderPart orderPart in this.orderParts)
             if(orderPart.Id.Equals(orderPartID)){

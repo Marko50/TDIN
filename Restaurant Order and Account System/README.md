@@ -1,7 +1,8 @@
 # Restaurant Order and Account System
 
-## Description(to be changed as far as the project grows)
+Repo to host code for the first TDIN project.
 
+## Description(to be changed as far as the project grows)
 
 The servers are included on the `Servers` folder and the `Clients` have API classes to do requests for the Servers.
 
