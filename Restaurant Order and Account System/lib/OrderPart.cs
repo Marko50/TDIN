@@ -9,7 +9,7 @@ public class OrderPart{
     private int quantity = 1;
     private string type = "Bar";
     private int price = 1;
-    private string state = "Ready";
+    private string state = "Not Picked";
 
      public int Id{
         get{
@@ -81,7 +81,7 @@ public class OrderPart{
     }
 
     public override string ToString(){
-        return "OrderPart from order no" + this.orderId + "\nDescription: " + this.description + "\nQuantity: " 
+        return "\r\n\r\nOrderPart no " + this.id + " from order no" + this.orderId + "\nDescription: " + this.description + "\nQuantity: " 
         + this.quantity + "\nType: " + this.type + "\nPrice: " + this.price + "\nState: " 
         + this.state + "\r\n\r\n";
     }

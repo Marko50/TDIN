@@ -17,6 +17,14 @@ public abstract class OrderDealing : MarshalByRefObject{
                 this.orders.Add(orderPart.Id, orderPart);
                 Console.WriteLine(this.type + " received: " + orderPart.ToString());
             }
-                
+    }
+
+    protected void changeOrderStatus(int orderPartID, string status){
+        if (this.orders.ContainsKey(orderPartID))
+        {
+            this.orders[orderPartID].State = status;
+            Console.WriteLine(this.type + ": " + this.orders[orderPartID].ToString() + " has changed status to " + status);    
+        }
+        
     }
 }

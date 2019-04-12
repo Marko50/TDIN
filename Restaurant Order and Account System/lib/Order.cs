@@ -44,15 +44,26 @@ public class Order{
         count++;
         OrderPart orderPartFirst = new OrderPart(this.id);
         OrderPart orderPartSecond = new OrderPart(this.id);
+        OrderPart orderPartThird = new OrderPart(this.id);
         orderPartSecond.Type = "Kitchen";
+        orderPartThird.Type = "Kitchen";
         this.orderParts.Add(orderPartFirst);
         this.orderParts.Add(orderPartSecond);
+        this.orderParts.Add(orderPartThird);
     }
 
     public override string ToString(){
         string ret = "";
         foreach (OrderPart orderPart in this.orderParts)
             ret += orderPart.ToString();
-        return "Order no " + this.id  + "\nFor table: " + this.destinationTable + "\r\n\r\n" + ret;
+        return "\r\n\r\nOrder no " + this.id  + "\nFor table: " + this.destinationTable + "\r\n\r\n" + ret;
+    }
+
+    public void changeOrderPartStatus(int orderPartID, string status){
+        foreach (OrderPart orderPart in this.orderParts)
+            if(orderPart.Id.Equals(orderPartID)){
+                orderPart.State = status;
+                Console.WriteLine(orderPart.ToString() + " has changed status to " + status);
+            }
     }
 }
