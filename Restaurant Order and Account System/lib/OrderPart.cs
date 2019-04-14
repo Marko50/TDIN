@@ -9,7 +9,7 @@ public class OrderPart{
     private int quantity = 1;
     private string type = "Bar";
     private int price = 1;
-    private string state = "Not Picked";
+    private string state = "Not Picked"; //(‘not  picked’,  ‘inpreparation’,‘ready’, and ‘paid’)
 
      public int Id{
         get{

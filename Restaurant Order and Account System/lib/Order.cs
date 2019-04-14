@@ -46,7 +46,9 @@ public class Order{
         OrderPart orderPartSecond = new OrderPart(this.id);
         OrderPart orderPartThird = new OrderPart(this.id);
         orderPartSecond.Type = "Kitchen";
+        orderPartSecond.State = "Ready";
         orderPartThird.Type = "Kitchen";
+        orderPartThird.State = "Ready";
         this.orderParts.Add(orderPartFirst);
         this.orderParts.Add(orderPartSecond);
         this.orderParts.Add(orderPartThird);
