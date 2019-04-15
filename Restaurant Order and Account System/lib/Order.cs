@@ -7,7 +7,8 @@ public class Order{
     
     private int id;
     private int destinationTable = 1;
-
+    private float price = 1;
+    
     List<OrderPart> orderParts = new List<OrderPart>();
 
     public int Id{
@@ -16,6 +17,15 @@ public class Order{
         }
         set{
             this.id = value;
+        }
+    }
+
+    public float Price{
+        get{
+            return this.price;
+        }
+        set{
+            this.price = value;
         }
     }
 
@@ -42,23 +52,23 @@ public class Order{
     public Order(){
         this.id = count;
         count++;
-        OrderPart orderPartFirst = new OrderPart(this.id);
-        OrderPart orderPartSecond = new OrderPart(this.id);
-        OrderPart orderPartThird = new OrderPart(this.id);
-        orderPartSecond.Type = "Kitchen";
-        orderPartSecond.State = "Ready";
-        orderPartThird.Type = "Kitchen";
-        orderPartThird.State = "Ready";
-        this.orderParts.Add(orderPartFirst);
-        this.orderParts.Add(orderPartSecond);
-        this.orderParts.Add(orderPartThird);
+        // OrderPart orderPartFirst = new OrderPart(this.id);
+        // OrderPart orderPartSecond = new OrderPart(this.id);
+        // OrderPart orderPartThird = new OrderPart(this.id);
+        // orderPartSecond.Type = "Kitchen";
+        // orderPartSecond.State = "Ready";
+        // orderPartThird.Type = "Kitchen";
+        // orderPartThird.State = "Ready";
+        // this.orderParts.Add(orderPartFirst);
+        // this.orderParts.Add(orderPartSecond);
+        // this.orderParts.Add(orderPartThird);
     }
 
     public override string ToString(){
         string ret = "";
         foreach (OrderPart orderPart in this.orderParts)
             ret += orderPart.ToString();
-        return "\r\n\r\nOrder no " + this.id  + "\nFor table: " + this.destinationTable + "\r\n\r\n" + ret;
+        return "\r\n\r\nOrder no " + this.id + "\nPrice" + this.price.ToString() + "\nFor table: " + this.destinationTable + "\r\n\r\n" + ret;
     }
 
     public bool isReady(){

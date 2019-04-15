@@ -8,7 +8,6 @@ public class OrderPart{
     private string description = "Teste";
     private int quantity = 1;
     private string type = "Bar";
-    private int price = 1;
     private string state = "Not Picked"; //(‘not  picked’,  ‘inpreparation’,‘ready’, and ‘paid’)
 
      public int Id{
@@ -56,14 +55,6 @@ public class OrderPart{
         }
     }
 
-    public int Price{
-        get{
-            return this.price;
-        }
-        set{
-            this.price = value;
-        }
-    }
 
     public string State{
         get{
@@ -82,7 +73,6 @@ public class OrderPart{
 
     public override string ToString(){
         return "\r\n\r\nOrderPart no " + this.id + " from order no" + this.orderId + "\nDescription: " + this.description + "\nQuantity: " 
-        + this.quantity + "\nType: " + this.type + "\nPrice: " + this.price + "\nState: " 
-        + this.state + "\r\n\r\n";
+        + this.quantity + "\nType: " + this.type + "\nState: "  + this.state + "\r\n\r\n";
     }
 }
