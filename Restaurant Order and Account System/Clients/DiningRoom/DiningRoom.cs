@@ -21,7 +21,6 @@ public class DiningRoom : MarshalByRefObject {
     }
 
     private void MakeOrder(string table, float price, Dictionary<string,string>[] information){
-        RemotingConfiguration.Configure("Clients/DiningRoom/DiningRoom.exe.config",false);
         CentralNodeManager centralNode = new CentralNodeManager();
         DiningRoom diningRoom = new DiningRoom();
         centralNode.OrderReadyEvent += diningRoom.handleReadyOrder;
