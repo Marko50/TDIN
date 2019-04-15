@@ -34,7 +34,7 @@ public class DiningRoom : MarshalByRefObject {
             orderPart.Type = item["type"];
             order.addOrderPart(orderPart);
         }
-        centralNode.handleOrder(new Order());
+        centralNode.handleOrder(order);
     }
 
     private void handleReadyOrder(int orderID){

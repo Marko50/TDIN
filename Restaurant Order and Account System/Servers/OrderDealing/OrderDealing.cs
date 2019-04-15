@@ -12,11 +12,13 @@ public abstract class OrderDealing : MarshalByRefObject{
 
     protected void handleOrder(List<OrderPart> orderParts){
         foreach (OrderPart orderPart in orderParts)
+        {
             if (orderPart.Type.Equals(this.type))
             {
                 this.orders.Add(orderPart.Id, orderPart);
                 Console.WriteLine(this.type + " received: " + orderPart.ToString());
             }
+        }
     }
 
     protected void changeOrderStatus(int orderPartID, string status){
