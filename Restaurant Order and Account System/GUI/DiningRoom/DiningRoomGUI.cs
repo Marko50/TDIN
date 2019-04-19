@@ -3,12 +3,12 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Generic;
 
-// DiningRoom diningRoom = new DiningRoom();
-//             diningRoom.MakeOrder(table, orderTotalPrice, information);
+
 public class DiningRoomGUI : Form{
 
     public delegate void MakeOrderHandler(string table, float price, Dictionary<string,string>[] information);
     public event MakeOrderHandler MakeOrderEvent;
+    
     private Dictionary<string,int> currentOrder = new Dictionary<string, int>();
     private Dictionary<string, string> currentOrderTypes = new Dictionary<string, string>();
 
@@ -20,6 +20,7 @@ public class DiningRoomGUI : Form{
         }
     }
     private OrderTotal orderTotal;
+    private Tables tables;
     public DiningRoomGUI(){
         this.MakeOrderEvent += this.makeOrderHandler;
         BackColor = Color.Silver;
@@ -27,10 +28,14 @@ public class DiningRoomGUI : Form{
         Text = "Dining Room";
         PurchaseOptions foods = new PurchaseOptions(this, 25, new string[]{"Arroz de Marisco : 15€", "Massa à labrador : 5€", "Prego em Prato : 5,5€"}, "Kitchen");
         PurchaseOptions drinks = new PurchaseOptions(this, 300, new string[]{"Cerveja : 1,5€", "Água : 1€", "Coca-Cola : 1,20€"}, "Bar");
-        Tables tables = new Tables(this, 150, 8);
-        this.orderTotal = new OrderTotal(this, 200);
+        this.tables = new Tables(this, 150, 8);
+        this.orderTotal = new OrderTotal(this, 200); 
+    }
+
+    public void addReadyOrder(Order order){
         
     }
+
 
     public void ButtonClick(object sender, EventArgs e){
         Button button = sender as Button;
@@ -53,12 +58,7 @@ public class DiningRoomGUI : Form{
                 this.currentOrderTypes[description] = type;
                 this.currentOrder[description] = 1;
             }
-            string s = "";
-            foreach (KeyValuePair<string, int> item in this.currentOrder){
-                s+= item.Key + " x" + item.Value;
-            }
-            s+= this.table.Equals("NONE") ? "" : " for table " + this.table;
-            this.orderTotal.setText("Order Total: " + (orderTotalPrice + price) + "€:" + s);
+            this.updateOrderTotal(orderTotalPrice + price);
         }
         else if(button.Text.Equals("-")){
             if(this.currentOrder.ContainsKey(description)){
@@ -69,15 +69,19 @@ public class DiningRoomGUI : Form{
                     this.currentOrder.Remove(description);
                     this.currentOrderTypes.Remove(description);
                 }
-                string s = "";
-                foreach (KeyValuePair<string, int> item in this.currentOrder){
-                    s+= item.Key + " x" + item.Value;
-                }
-                s+= this.table.Equals("NONE") ? "" : " for table " + this.table;
-                this.orderTotal.setText("Order Total: " + (orderTotalPrice - price) + "€:" + s);
+                this.updateOrderTotal(orderTotalPrice - price);
             }
         }
         
+    }
+
+    public void updateOrderTotal(float price){
+        string s = "";
+        foreach (KeyValuePair<string, int> item in this.currentOrder){
+            s+= item.Key + " x" + item.Value;
+        }
+        s+= this.table.Equals("NONE") ? "" : " for table " + this.table;
+        this.orderTotal.setText("Order Total: " + price + "€:" + s);
     }
 
     public void MakeOrder(object sender, EventArgs e){
@@ -95,13 +99,12 @@ public class DiningRoomGUI : Form{
                 information[count] = unit;
                 count++;
             }
-            Console.WriteLine("F TO PAY RESPECTS");
             this.MakeOrderEvent(this.table, orderTotalPrice, information);
-            Console.WriteLine("respects were payed");
             this.currentOrder.Clear();
             this.currentOrderTypes.Clear();
             this.orderTotal.setText("Order Total : 0€:");
             this.table = "NONE";
+            this.tables.unCheck();
         }
     }
 
@@ -152,6 +155,13 @@ public class DiningRoomGUI : Form{
             this.text.Text = t;
         }
 
+        public float getTotal(){
+            string price = this.text.Text.Split(":")[1];
+            string price_parsable = price.Remove(price.Length - 1 , 1);
+            Console.WriteLine(price_parsable);
+            return float.Parse(price_parsable);
+        }
+
         public OrderTotal(DiningRoomGUI parent, int startY){
             this.text = new Label();
             this.text.Parent = parent;
@@ -175,17 +185,13 @@ public class DiningRoomGUI : Form{
 
     private class Tables{
 
-        CheckBox ticked = null;
+        private CheckBox ticked = null;
        
         public Tables(DiningRoomGUI parent, int startY, int numTables){
             for (int i = 0; i < numTables; i++)
             {
-                // Create and initialize a CheckBox.   
                 CheckBox checkBox1 = new CheckBox(); 
-                // Make the check box control appear as a toggle button.
                 checkBox1.Appearance = Appearance.Button;
-                // Turn off the update of the display on the click of the control.
-                //checkBox1.AutoCheck = false;
                 checkBox1.Text = "Table " + (i + 1).ToString();
                 checkBox1.Parent = parent;
                 checkBox1.Click += new EventHandler(this.checkBoxHandler);
@@ -195,6 +201,11 @@ public class DiningRoomGUI : Form{
                 parent.Controls.Add(checkBox1);
             }
             
+        }
+
+        public void unCheck(){
+            if(this.ticked != null)
+                this.ticked.Checked = false;
         }
 
         private void checkBoxHandler(object sender, EventArgs e){
@@ -210,6 +221,7 @@ public class DiningRoomGUI : Form{
                 check.Checked = true;
             }
             parent.Table = check.Text.Split(" ")[1];
+            parent.updateOrderTotal(parent.orderTotal.getTotal());
         }
     }
 

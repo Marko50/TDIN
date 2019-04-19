@@ -1,10 +1,11 @@
 using System;
 using System.Runtime.Remoting;
+using System.Windows.Forms;
 using System.Collections.Generic;
 
-public class BarManager : OrderDealing{
-    protected Dictionary <int, OrderPart> orders;
 
+public class BarManager : OrderDealing{
+    private BarGUI barGUI = new BarGUI();
     public BarManager() : base(){
         this.type = "Bar";
     }
@@ -14,8 +15,7 @@ public class BarManager : OrderDealing{
         CentralNodeManager centralNode = new CentralNodeManager();
         centralNode.OrderEvent += bar.handleOrder; 
         centralNode.OrderChangeEvent += bar.changeOrderStatus;
-        Console.WriteLine("Bar was opened! Press ENTER to exit!");
-        Console.ReadLine();
+        Application.Run(bar.barGUI);
         centralNode.OrderEvent -= bar.handleOrder;
         centralNode.OrderChangeEvent -= bar.changeOrderStatus;
     }

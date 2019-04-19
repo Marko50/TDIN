@@ -37,7 +37,7 @@ public class DiningRoom : MarshalByRefObject {
         centralNode.handleOrder(order);
     }
 
-    private void handleReadyOrder(int orderID){
-        Console.WriteLine("\r\n\r\nOrder no " + orderID + " is ready to be picked.\r\n\r\n");
+    private void handleReadyOrder(Order order){
+        Console.WriteLine("\r\n\r\nOrder no " + order.Id + " is ready to be picked.\r\n\r\n");
     }
 }

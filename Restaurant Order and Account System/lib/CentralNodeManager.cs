@@ -10,14 +10,14 @@ public class CentralNodeManager : MarshalByRefObject{
     public delegate void OrderChangeHandler(int orderPartID, string status);
     public event OrderChangeHandler OrderChangeEvent;
 
-    public delegate void OrderReadyHandler(int orderID);
+    public delegate void OrderReadyHandler(Order order);
     public event OrderReadyHandler OrderReadyEvent;
 
     private void handler(List<OrderPart> order){}
 
     private void changeHandler(int orderPartID, string status){}
 
-    private void readyHandler(int orderID){}
+    private void readyHandler(Order order){}
 
     public CentralNodeManager(){
         this.orders = new Dictionary<int, Order>();
@@ -38,7 +38,7 @@ public class CentralNodeManager : MarshalByRefObject{
         this.orders[orderID].changeOrderPartStatus(orderPartID, status);
         this.OrderChangeEvent(orderPartID, status);
         if (this.orders[orderID].isReady()){
-            this.OrderReadyEvent(orderID);
+            this.OrderReadyEvent(this.orders[orderID]);
         }
     }
 }
