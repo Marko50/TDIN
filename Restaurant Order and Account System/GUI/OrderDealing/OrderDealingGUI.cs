@@ -17,8 +17,8 @@ public class OrderDealingGUI : Form{
         BackColor = Color.Silver;
         Text = title;
         Size = new Size(600,400);
-        this.notPickedOrderListing = new NotPickedOrderListing(this,  25, 25);
-        this.inPrepOrderListing = new InPreparationOrderListing(this, 350, 25);
+        this.notPickedOrderListing = new NotPickedOrderListing(25, 25);
+        this.inPrepOrderListing = new InPreparationOrderListing(350, 25);
         this.Activated += this.ActivatedHandler;
     }
 
@@ -63,22 +63,9 @@ public class OrderDealingGUI : Form{
         }
     }
     
-    private class NotPickedOrderListing{
-        private Dictionary<int,string> orders = new Dictionary<int, string>(); // orderid, description
-        private int x,y;
-        public Dictionary<int,string> Orders{
-            get{
-                return orders;
-            }
-        }
-        public NotPickedOrderListing(OrderDealingGUI parent, int startX, int startY){
-            this.x = startX;
-            this.y = startY;
-            // this.addOrder(0,"kslajdas");
-            // this.addOrder(1,"sadlçsad");
-            //this.setupComponents(parent);
-        }
-        public void setupComponents(OrderDealingGUI parent){
+    private class NotPickedOrderListing : OrderListing{
+        public NotPickedOrderListing(int startX, int startY) :base(startX, startY){}
+        public override void setupComponents(OrderDealingGUI parent){
             Label text = new Label();
             text.Text = "Orders Not Picked";
             text.Parent = parent;
@@ -117,37 +104,12 @@ public class OrderDealingGUI : Form{
                 i++;
             } 
         }
-
-        public void addOrder(int orderID, string description){
-            if(!this.orders.ContainsKey(orderID))
-                this.orders.Add(orderID, description);
-        }
-
-        public void removeOrder(int id){
-            if(this.orders.ContainsKey(id)){
-                Console.WriteLine("Removed order");
-                this.orders.Remove(id);
-            }
-        }
     }
 
-       private class InPreparationOrderListing{
-        private Dictionary<int,string> orders = new Dictionary<int, string>(); // orderid, description
+       private class InPreparationOrderListing : OrderListing{
+        public InPreparationOrderListing(int startX, int startY) : base(startX, startY){}
 
-        private int x,y;
-
-        public Dictionary<int,string> Orders{
-            get{
-                return orders;
-            }
-        }
-        public InPreparationOrderListing(OrderDealingGUI parent, int startX, int startY){
-            this.x = startX;
-            this.y = startY;
-            //this.setupComponents(parent);
-        }
-
-        public void setupComponents(OrderDealingGUI parent){
+        public override void setupComponents(OrderDealingGUI parent){
             Label text = new Label();
             text.Text = "Orders In Preparation";
             text.Parent = parent;
@@ -191,21 +153,38 @@ public class OrderDealingGUI : Form{
                 button2.Location = new Point(this.x + order.Width + button.Width + 10 , this.y + text.Height*(i+1) + 10);
                 button2.Size = new Size(20,20);
                 button2.Tag = order;
-                //button2.Click += new EventHandler(parent.ButtonClick);
+
                 parent.Controls.Add(button2);
                 parent.controls.Add(button2);
                 i++;
             } 
+        }
+    }
+
+
+    private abstract class OrderListing{
+        protected Dictionary<int,string> orders = new Dictionary<int, string>(); // orderid, description
+
+        protected int x,y;
+
+        public Dictionary<int,string> Orders{
+            get{
+                return orders;
+            }
+        }
+        public OrderListing(int startX, int startY){
+            this.x = startX;
+            this.y = startY;
         }
 
         public void addOrder(int orderID, string description){
             if(!this.orders.ContainsKey(orderID))
                 this.orders.Add(orderID, description);
         }
-
         public void removeOrder(int id){
             if(this.orders.ContainsKey(id))
                 this.orders.Remove(id);
         }
+        public abstract void setupComponents(OrderDealingGUI parent);
     }
 }
