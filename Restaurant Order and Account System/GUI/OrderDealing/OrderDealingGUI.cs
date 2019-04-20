@@ -9,12 +9,8 @@ public class OrderDealingGUI : Form{
     private NotPickedOrderListing notPickedOrderListing;
     private InPreparationOrderListing inPrepOrderListing; 
 
-    protected override void OnShown(EventArgs e){
-        Console.WriteLine("dasfkdsjfsd");
-        foreach (Control item in this.controls){
-            item.Select();
-            base.OnShown(e);
-        }
+    public void ActivatedHandler(object sender, EventArgs e){
+        this.reload();
     }
     
     public OrderDealingGUI(string title){
@@ -23,6 +19,7 @@ public class OrderDealingGUI : Form{
         Size = new Size(600,400);
         this.notPickedOrderListing = new NotPickedOrderListing(this,  25, 25);
         this.inPrepOrderListing = new InPreparationOrderListing(this, 350, 25);
+        this.Activated += this.ActivatedHandler;
     }
 
 
@@ -56,6 +53,7 @@ public class OrderDealingGUI : Form{
     }
 
     private void reload(){
+        this.Focus();
         this.removeControls();
         this.notPickedOrderListing.setupComponents(this);
         this.inPrepOrderListing.setupComponents(this);
@@ -78,7 +76,7 @@ public class OrderDealingGUI : Form{
             this.y = startY;
             // this.addOrder(0,"kslajdas");
             // this.addOrder(1,"sadlçsad");
-            this.setupComponents(parent);
+            //this.setupComponents(parent);
         }
         public void setupComponents(OrderDealingGUI parent){
             Label text = new Label();
@@ -130,9 +128,7 @@ public class OrderDealingGUI : Form{
                 Console.WriteLine("Removed order");
                 this.orders.Remove(id);
             }
-                
         }
-
     }
 
        private class InPreparationOrderListing{
@@ -148,7 +144,7 @@ public class OrderDealingGUI : Form{
         public InPreparationOrderListing(OrderDealingGUI parent, int startX, int startY){
             this.x = startX;
             this.y = startY;
-            this.setupComponents(parent);
+            //this.setupComponents(parent);
         }
 
         public void setupComponents(OrderDealingGUI parent){
