@@ -8,6 +8,14 @@ public class OrderDealingGUI : Form{
     List<Control> controls = new List<Control>();
     private NotPickedOrderListing notPickedOrderListing;
     private InPreparationOrderListing inPrepOrderListing; 
+
+    protected override void OnShown(EventArgs e){
+        Console.WriteLine("dasfkdsjfsd");
+        foreach (Control item in this.controls){
+            item.Select();
+            base.OnShown(e);
+        }
+    }
     
     public OrderDealingGUI(string title){
         BackColor = Color.Silver;
@@ -16,6 +24,7 @@ public class OrderDealingGUI : Form{
         this.notPickedOrderListing = new NotPickedOrderListing(this,  25, 25);
         this.inPrepOrderListing = new InPreparationOrderListing(this, 350, 25);
     }
+
 
     public void ButtonClick(object sender, EventArgs e, string type){
         Button button = sender as Button;
@@ -31,15 +40,28 @@ public class OrderDealingGUI : Form{
             this.notPickedOrderListing.addOrder(id, this.inPrepOrderListing.Orders[id]);
             this.inPrepOrderListing.removeOrder(id);
         }
-        this.removeControls();
-        this.notPickedOrderListing.setupComponents(this);
-        this.inPrepOrderListing.setupComponents(this);
+        this.reload();
     }
 
     private void removeControls(){
-        foreach (Control item in this.controls)
-        {
+        foreach (Control item in this.controls){
             this.Controls.Remove(item);
+        }
+        this.controls.Clear();
+    }
+
+    public void addOrderPartNotPicked(int id, string desc){
+        this.notPickedOrderListing.addOrder(id,desc);
+        this.reload();
+    }
+
+    private void reload(){
+        this.removeControls();
+        this.notPickedOrderListing.setupComponents(this);
+        this.inPrepOrderListing.setupComponents(this);
+        Application.DoEvents();
+        foreach (Control item in this.controls){
+            item.Refresh();
         }
     }
     
@@ -52,50 +74,41 @@ public class OrderDealingGUI : Form{
             }
         }
         public NotPickedOrderListing(OrderDealingGUI parent, int startX, int startY){
-            this.orders.Add(0, "isadsjadhsa");
-            this.orders.Add(1, "isadsjadhsa");
-            this.orders.Add(2, "isadsjadhsa");
             this.x = startX;
             this.y = startY;
+            // this.addOrder(0,"kslajdas");
+            // this.addOrder(1,"sadlçsad");
             this.setupComponents(parent);
         }
-
-        public void addOrder(int orderID, string description){
-            if(!this.orders.ContainsKey(orderID))
-                this.orders.Add(orderID, description);
-        }
-
-        public void removeOrder(int id){
-            if(this.orders.ContainsKey(id))
-                this.orders.Remove(id);
-        }
-
         public void setupComponents(OrderDealingGUI parent){
             Label text = new Label();
-            text.Parent = parent;
             text.Text = "Orders Not Picked";
+            text.Parent = parent;
             text.BorderStyle = BorderStyle.FixedSingle;
             text.Font = new Font("Arial", 14, FontStyle.Bold);
             text.BackColor = Color.SkyBlue;
             text.Location = new Point(this.x, this.y);
             text.AutoSize = true;
+            parent.Controls.Add(text);
             parent.controls.Add(text);
             int i = 0;
             foreach (KeyValuePair<int,string> item in this.orders)
             {
                 Label order = new Label();
-                order.Parent = parent;
                 order.Tag = item.Key;
+                order.Parent = parent;
                 order.Text = item.Key + " : " + item.Value;
                 order.BorderStyle = BorderStyle.FixedSingle;
                 order.Font = new Font("Arial", 14, FontStyle.Bold);
                 order.BackColor = Color.SkyBlue;
                 order.Location = new Point(this.x, this.y + text.Height*(i+1) + 10);
                 order.AutoSize = true;
+                parent.Controls.Add(order);
                 parent.controls.Add(order);
+
                 Button button = new Button();
-                button.Text = "->";
                 button.Parent = parent;
+                button.Text = "->";
                 button.BackColor = Color.SkyBlue;
                 button.Location = new Point(this.x + order.Width + 10 , this.y + text.Height*(i+1) + 10);
                 button.Size = new Size(20,20);
@@ -106,6 +119,20 @@ public class OrderDealingGUI : Form{
                 i++;
             } 
         }
+
+        public void addOrder(int orderID, string description){
+            if(!this.orders.ContainsKey(orderID))
+                this.orders.Add(orderID, description);
+        }
+
+        public void removeOrder(int id){
+            if(this.orders.ContainsKey(id)){
+                Console.WriteLine("Removed order");
+                this.orders.Remove(id);
+            }
+                
+        }
+
     }
 
        private class InPreparationOrderListing{
@@ -126,30 +153,33 @@ public class OrderDealingGUI : Form{
 
         public void setupComponents(OrderDealingGUI parent){
             Label text = new Label();
-            text.Parent = parent;
             text.Text = "Orders In Preparation";
+            text.Parent = parent;
             text.BorderStyle = BorderStyle.FixedSingle;
             text.Font = new Font("Arial", 14, FontStyle.Bold);
             text.BackColor = Color.SkyBlue;
             text.Location = new Point(this.x, this.y);
             text.AutoSize = true;
+            parent.Controls.Add(text);
             parent.controls.Add(text);
             int i = 0;
             foreach (KeyValuePair<int,string> item in this.orders)
             {
                 Label order = new Label();
-                order.Parent = parent;
                 order.Tag = item.Key;
+                order.Parent = parent;
                 order.Text = item.Key + " : " + item.Value;
                 order.BorderStyle = BorderStyle.FixedSingle;
                 order.Font = new Font("Arial", 14, FontStyle.Bold);
                 order.BackColor = Color.SkyBlue;
                 order.Location = new Point(this.x, this.y + text.Height*(i+1) + 10);
                 order.AutoSize = true;
+                parent.Controls.Add(order);
                 parent.controls.Add(order);
+
                 Button button = new Button();
-                button.Text = "<-";
                 button.Parent = parent;
+                button.Text = "<-";
                 button.BackColor = Color.SkyBlue;
                 button.Location = new Point(this.x + order.Width + 10 , this.y + text.Height*(i+1) + 10);
                 button.Size = new Size(20,20);
@@ -157,9 +187,10 @@ public class OrderDealingGUI : Form{
                 button.Click += new EventHandler((sender, e) => parent.ButtonClick(sender, e , "In Preparation") );
                 parent.Controls.Add(button);
                 parent.controls.Add(button);
+
                 Button button2 = new Button();
-                button2.Text = "->";
                 button2.Parent = parent;
+                button2.Text = "->";
                 button2.BackColor = Color.SkyBlue;
                 button2.Location = new Point(this.x + order.Width + button.Width + 10 , this.y + text.Height*(i+1) + 10);
                 button2.Size = new Size(20,20);
@@ -181,7 +212,4 @@ public class OrderDealingGUI : Form{
                 this.orders.Remove(id);
         }
     }
-
-
-
 }

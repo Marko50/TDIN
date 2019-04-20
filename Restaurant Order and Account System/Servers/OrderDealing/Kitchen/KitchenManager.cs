@@ -1,9 +1,12 @@
 using System;
 using System.Runtime.Remoting;
+using System.Windows.Forms;
 using System.Collections.Generic;
+
 
 public class KitchenManager : OrderDealing{
     public KitchenManager() : base(){
+        this.gui = new KitchenGUI();
         this.type = "Kitchen";
     }
     public static void Main(){
@@ -12,8 +15,7 @@ public class KitchenManager : OrderDealing{
         CentralNodeManager centralNode = new CentralNodeManager();
         centralNode.OrderEvent += kitchen.handleOrder;
         centralNode.OrderChangeEvent += kitchen.changeOrderStatus;
-        Console.WriteLine("Kitchen was opened! Press ENTER to exit!");
-        Console.ReadLine();
+        Application.Run(kitchen.gui);
         centralNode.OrderEvent -= kitchen.handleOrder;
         centralNode.OrderChangeEvent -= kitchen.changeOrderStatus;
     }

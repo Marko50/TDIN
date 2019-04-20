@@ -3,6 +3,7 @@ using System.Runtime.Remoting;
 using System.Collections.Generic;
 
 public abstract class OrderDealing : MarshalByRefObject{
+    protected OrderDealingGUI gui;
     protected string type; 
     private Dictionary <int, OrderPart> orders;
 
@@ -13,9 +14,9 @@ public abstract class OrderDealing : MarshalByRefObject{
     protected void handleOrder(List<OrderPart> orderParts){
         foreach (OrderPart orderPart in orderParts)
         {
-            if (orderPart.Type.Equals(this.type))
-            {
+            if (orderPart.Type.Equals(this.type)){
                 this.orders.Add(orderPart.Id, orderPart);
+                this.gui.addOrderPartNotPicked(orderPart.Id, orderPart.Description + " x" + orderPart.Quantity);
                 Console.WriteLine(this.type + " received: " + orderPart.ToString());
             }
         }

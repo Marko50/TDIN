@@ -5,9 +5,10 @@ using System.Collections.Generic;
 
 
 public class BarManager : OrderDealing{
-    private BarGUI barGUI = new BarGUI();
+    
     public BarManager() : base(){
         this.type = "Bar";
+        this.gui = new BarGUI();
     }
     public static void Main(){
         RemotingConfiguration.Configure("Servers/OrderDealing/Bar/BarManager.exe.config", false);
@@ -15,7 +16,7 @@ public class BarManager : OrderDealing{
         CentralNodeManager centralNode = new CentralNodeManager();
         centralNode.OrderEvent += bar.handleOrder; 
         centralNode.OrderChangeEvent += bar.changeOrderStatus;
-        Application.Run(bar.barGUI);
+        Application.Run(bar.gui);
         centralNode.OrderEvent -= bar.handleOrder;
         centralNode.OrderChangeEvent -= bar.changeOrderStatus;
     }
