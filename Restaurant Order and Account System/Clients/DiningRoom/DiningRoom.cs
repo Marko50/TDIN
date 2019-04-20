@@ -39,5 +39,6 @@ public class DiningRoom : MarshalByRefObject {
 
     private void handleReadyOrder(Order order){
         Console.WriteLine("\r\n\r\nOrder no " + order.Id + " is ready to be picked.\r\n\r\n");
+        this.gui.addReadyOrder(order.Id, "For table " + order.DestinationTable);
     }
 }

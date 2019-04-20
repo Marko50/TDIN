@@ -7,7 +7,9 @@ using System.Collections.Generic;
 public class OrderDealingGUI : Form{
     List<Control> controls = new List<Control>();
     private NotPickedOrderListing notPickedOrderListing;
-    private InPreparationOrderListing inPrepOrderListing; 
+    private InPreparationOrderListing inPrepOrderListing;
+    public delegate void OrderPartStatusHandler(int orderPartId, string status);
+    public event OrderPartStatusHandler OrderPartStatusEvent;
 
     public void ActivatedHandler(object sender, EventArgs e){
         this.reload();
@@ -20,7 +22,10 @@ public class OrderDealingGUI : Form{
         this.notPickedOrderListing = new NotPickedOrderListing(25, 25);
         this.inPrepOrderListing = new InPreparationOrderListing(350, 25);
         this.Activated += this.ActivatedHandler;
+        //this.OrderPartStatusEvent += this.defaultOrderStatusHandler;
     }
+
+    // private void defaultOrderStatusHandler(int opId, string st){}
 
 
     public void ButtonClick(object sender, EventArgs e, string type){
@@ -31,11 +36,18 @@ public class OrderDealingGUI : Form{
             Console.WriteLine("Not picked -> In prep");
             this.inPrepOrderListing.addOrder(id, this.notPickedOrderListing.Orders[id]);
             this.notPickedOrderListing.removeOrder(id);
+            this.OrderPartStatusEvent(id, "In Preparation");
         }
         else if(type.Equals("In Preparation")) {
             Console.WriteLine("In prep -> Not picked ");
             this.notPickedOrderListing.addOrder(id, this.inPrepOrderListing.Orders[id]);
             this.inPrepOrderListing.removeOrder(id);
+            this.OrderPartStatusEvent(id, "Not Picked");
+        }
+        else if(type.Equals("Ready")){
+            Console.WriteLine("In prep -> Ready");
+            this.inPrepOrderListing.removeOrder(id);
+            this.OrderPartStatusEvent(id, "Ready");
         }
         this.reload();
     }
@@ -153,6 +165,7 @@ public class OrderDealingGUI : Form{
                 button2.Location = new Point(this.x + order.Width + button.Width + 10 , this.y + text.Height*(i+1) + 10);
                 button2.Size = new Size(20,20);
                 button2.Tag = order;
+                button2.Click += new EventHandler((sender, e) => parent.ButtonClick(sender, e , "Ready") );
 
                 parent.Controls.Add(button2);
                 parent.controls.Add(button2);

@@ -7,9 +7,6 @@ public class CentralNodeManager : MarshalByRefObject{
     public delegate void OrderHandler(List<OrderPart> order);
     public event OrderHandler OrderEvent;
 
-    public delegate void OrderChangeHandler(int orderPartID, string status);
-    public event OrderChangeHandler OrderChangeEvent;
-
     public delegate void OrderReadyHandler(Order order);
     public event OrderReadyHandler OrderReadyEvent;
 
@@ -22,7 +19,6 @@ public class CentralNodeManager : MarshalByRefObject{
     public CentralNodeManager(){
         this.orders = new Dictionary<int, Order>();
         this.OrderEvent += this.handler;
-        this.OrderChangeEvent += this.changeHandler;
         this.OrderReadyEvent += this.readyHandler;
     }
 
@@ -30,13 +26,11 @@ public class CentralNodeManager : MarshalByRefObject{
         Console.WriteLine("CentralNode received order: \n" + order.ToString());
         if(!this.orders.ContainsKey(order.Id))
             this.orders.Add(order.Id, order);
-            
         this.OrderEvent(order.OrderParts);
     }
 
     public void changeOrderPartStatus(int orderID, int orderPartID, string status){
         this.orders[orderID].changeOrderPartStatus(orderPartID, status);
-        this.OrderChangeEvent(orderPartID, status);
         if (this.orders[orderID].isReady()){
             this.OrderReadyEvent(this.orders[orderID]);
         }

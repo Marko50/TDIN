@@ -9,7 +9,7 @@ Application: Servers/OrderDealing/OrderDealing.cs Servers/OrderDealing/Bar/BarMa
 	@csc -target:library -reference:OrderDealingGUI.dll GUI/OrderDealing/Bar/BarGUI.cs
 	@csc -target:library -reference:OrderDealingGUI.dll GUI/OrderDealing/Kitchen/KitchenGUI.cs
 	@csc Servers/CentralNode/CentralNode.cs
-	@csc -reference:OrderPart.dll -reference:OrderDealingGUI.dll -target:library Servers/OrderDealing/OrderDealing.cs
+	@csc -reference:OrderPart.dll -reference:OrderDealingGUI.dll -reference:CentralNodeManager.dll -target:library Servers/OrderDealing/OrderDealing.cs
 	@csc -reference:CentralNodeManager.dll -reference:OrderPart.dll -reference:OrderDealing.dll -reference:OrderDealingGUI.dll -reference:BarGUI.dll Servers/OrderDealing/Bar/BarManager.cs
 	@csc -reference:CentralNodeManager.dll -reference:OrderPart.dll -reference:OrderDealing.dll -reference:OrderDealingGUI.dll -reference:KitchenGUI.dll Servers/OrderDealing/Kitchen/KitchenManager.cs
 	@csc -reference:CentralNodeManager.dll -reference:Order.dll -reference:DiningRoomGUI.dll -reference:OrderPart.dll Clients/DiningRoom/DiningRoom.cs
