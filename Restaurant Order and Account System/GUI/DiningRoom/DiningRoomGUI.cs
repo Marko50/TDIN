@@ -26,6 +26,7 @@ public class DiningRoomGUI : Form{
     private ReadyOrders readyOrders;
     public DiningRoomGUI(){
         this.MakeOrderEvent += this.makeOrderHandler;
+        this.Activated += this.ActivatedHandler;
         BackColor = Color.Silver;
         Size = new Size(600,600);
         Text = "Dining Room";
@@ -33,7 +34,11 @@ public class DiningRoomGUI : Form{
         PurchaseOptions drinks = new PurchaseOptions(this, 300, new string[]{"Cerveja : 1,5€", "Água : 1€", "Coca-Cola : 1,20€"}, "Bar");
         this.tables = new Tables(this, 150, 8);
         this.orderTotal = new OrderTotal(this, 200);
-        this.readyOrders = new ReadyOrders(25, 400);
+        this.readyOrders = new ReadyOrders(25, 300);
+    }
+
+    public void ActivatedHandler(object sender, EventArgs e){
+        this.reload();
     }
 
     private void reload(){
@@ -294,7 +299,7 @@ public class DiningRoomGUI : Form{
                 button.Text = "PAID";
                 button.BackColor = Color.SkyBlue;
                 button.Location = new Point(this.x + order.Width + 10 , this.y + text.Height*(i+1) + 10);
-                button.Size = new Size(20,20);
+                button.Size = new Size(40,20);
                 button.Tag = order;
                 button.Click += new EventHandler(parent.paidOrder);
                 parent.Controls.Add(button);
