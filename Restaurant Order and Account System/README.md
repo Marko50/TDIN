@@ -18,3 +18,4 @@ The servers are included on the `Servers` folder and the `Clients` have API clas
 4. On the third one `mono BarManager.exe`
 5. On the fourth one `mono DiningRoom.exe`
 6. On the fifth one `mono Bar.exe`
+7. On the sixth on `mono PaymentManager.exe`
