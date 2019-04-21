@@ -10,16 +10,22 @@ public class CentralNodeManager : MarshalByRefObject{
     public delegate void OrderReadyHandler(Order order);
     public event OrderReadyHandler OrderReadyEvent;
 
+    public delegate void OrderServedHandler(Order order);
+    public event OrderServedHandler OrderServedEvent;
+
     private void handler(List<OrderPart> order){}
 
     private void changeHandler(int orderPartID, string status){}
 
     private void readyHandler(Order order){}
 
+    private void servedHandler(Order order){}
+
     public CentralNodeManager(){
         this.orders = new Dictionary<int, Order>();
         this.OrderEvent += this.handler;
         this.OrderReadyEvent += this.readyHandler;
+        this.OrderServedEvent += this.servedHandler;
     }
 
     public void handleOrder(Order order){
@@ -33,6 +39,13 @@ public class CentralNodeManager : MarshalByRefObject{
         this.orders[orderID].changeOrderPartStatus(orderPartID, status);
         if (this.orders[orderID].isReady()){
             this.OrderReadyEvent(this.orders[orderID]);
+        }
+    }
+
+    public void servedOrder(int orderID){
+        if(this.orders.ContainsKey(orderID)){
+            Console.WriteLine("\r\n\r\nOrder no " + orderID + " is ready was served.\r\n\r\n");
+            this.OrderServedEvent(this.orders[orderID]);
         }
     }
 }

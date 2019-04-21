@@ -9,6 +9,9 @@ public class DiningRoomGUI : Form{
     private List<Control> controls = new List<Control>();
     public delegate void MakeOrderHandler(string table, float price, Dictionary<string,string>[] information);
     public event MakeOrderHandler MakeOrderEvent;
+
+    public delegate void ServeOrderHandler(int orderID);
+    public event ServeOrderHandler ServeOrderEvent;
     
     private Dictionary<string,int> currentOrder = new Dictionary<string, int>();
     private Dictionary<string, string> currentOrderTypes = new Dictionary<string, string>();
@@ -63,12 +66,13 @@ public class DiningRoomGUI : Form{
         this.reload();
     }
 
-    public void paidOrder(object sender, EventArgs e){
+    public void servedOrder(object sender, EventArgs e){
         Button button = sender as Button;
         Label label = button.Tag as Label;
         int id = (int) label.Tag;
         this.readyOrders.removeOrder(id);
         this.reload();
+        this.ServeOrderEvent(id);
     }
 
 
@@ -296,12 +300,12 @@ public class DiningRoomGUI : Form{
 
                 Button button = new Button();
                 button.Parent = parent;
-                button.Text = "PAID";
+                button.Text = "Serve";
                 button.BackColor = Color.SkyBlue;
                 button.Location = new Point(this.x + order.Width + 10 , this.y + text.Height*(i+1) + 10);
                 button.Size = new Size(40,20);
                 button.Tag = order;
-                button.Click += new EventHandler(parent.paidOrder);
+                button.Click += new EventHandler(parent.servedOrder);
                 parent.Controls.Add(button);
                 parent.controls.Add(button);
                 i++;
