@@ -12,7 +12,7 @@ public class BarManager : OrderDealing{
         this.gui.OrderPartStatusEvent += this.changeOrderStatus;
     }
     public static void Main(){
-        RemotingConfiguration.Configure("Servers/OrderDealing/Bar/BarManager.exe.config", false);
+        RemotingConfiguration.Configure("src/Servers/OrderDealing/Bar/BarManager.exe.config", false);
         BarManager bar = new BarManager();
         Application.Run(bar.gui);
         bar.unlinkEvents();

@@ -9,7 +9,7 @@ public class DiningRoom : MarshalByRefObject {
     
     [STAThread]
     public static void Main(){
-        RemotingConfiguration.Configure("Clients/DiningRoom/DiningRoom.exe.config",false);
+        RemotingConfiguration.Configure("src/Clients/DiningRoom.exe.config",false);
         DiningRoom diningRoom = new DiningRoom();  
         Application.Run(diningRoom.gui);
         diningRoom.centralNode.OrderReadyEvent -= diningRoom.handleReadyOrder;

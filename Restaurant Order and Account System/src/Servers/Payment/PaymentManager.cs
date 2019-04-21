@@ -8,7 +8,7 @@ public class PaymentManager : MarshalByRefObject{
     private CentralNodeManager centralNode = new CentralNodeManager();
     private Dictionary<int, Order> orders = new Dictionary<int, Order>();
     public static void Main(){
-        RemotingConfiguration.Configure("Servers/Payment/PaymentManager.exe.config", false);
+        RemotingConfiguration.Configure("src/Servers/Payment/PaymentManager.exe.config", false);
         PaymentManager paymentManager = new PaymentManager();
         Console.WriteLine("Payment Manager has started. Click ENTER to close it.");
         Console.ReadLine();

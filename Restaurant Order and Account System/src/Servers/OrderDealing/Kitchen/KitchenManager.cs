@@ -11,7 +11,7 @@ public class KitchenManager : OrderDealing{
         this.type = "Kitchen";
     }
     public static void Main(){
-        RemotingConfiguration.Configure("Servers/OrderDealing/Kitchen/KitchenManager.exe.config", false);
+        RemotingConfiguration.Configure("src/Servers/OrderDealing/Kitchen/KitchenManager.exe.config", false);
         KitchenManager kitchen = new KitchenManager();
         Application.Run(kitchen.gui);
         kitchen.unlinkEvents();
