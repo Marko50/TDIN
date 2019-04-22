@@ -19,6 +19,7 @@ From here now we'll explain our project solution, including system architecture,
 - When either the **Bar** or the **Kitchen** have changed the status of an **Order Part**, they remotely call the **Central Node** to update it there and when all the **Order Parts** are ready, the **Central Node** triggers an event(for which the dining room terminals are subscribed) that notifies the **Dining Room** terminals.
 - When an order is served it remotely calls a method on the **Central Node** that triggers an event, for which the **Payment Zone** is subscribed, so the order is received by the **Payment Zone**.
 - Finnaly, when an order is signaled as payed on the **Payment Zone** terminal, it remotely calls a method on the **Central Node** which prints the order invoice and updates it to paid.
+<br> </br>
 
 The orders are all stored in the **Central Node** inside a **Map**.
 The **Bar** and **Kitchen** store the order's **order parts** inside a **Map**, and are consistent with those in the Central Node.
@@ -39,10 +40,14 @@ List of implemented functionalities:
 
 ### Use sequences
 
-1. So firstly here is the Dining Room terminal, where the waiter should select the number of desired dishes and drinks for a specific table, and then click Make Order.  ![alt text](images/diningRoom.png)
+1. So firstly here is the Dining Room terminal, where the waiter should select the number of desired dishes and drinks for a specific table, and then click Make Order.<br> </br>
+![alt text](images/diningRoom.png)
 
-2. Then, depending on the order type, it will show up on the Kitchen and Bar terminals where the people there can change the order status between `Not Picked`, `In preparation` and `Ready`.  ![alt text](images/orderDealing.png)
+2. Then, depending on the order type, it will show up on the Kitchen and Bar terminals where the people there can change the order status between `Not Picked`, `In preparation` and `Ready`.<br> </br>
+![alt text](images/orderDealing.png)
 
-3. Whenall the **order parts** tare ready it'll show up, on the `Orders Not Piked` zone of the dining room. terminal. A waiter can collect the order and serve it by clicking `Serve` ![alt text](images/diningRoomNotPicked.png)
+3. When all the **order parts** are ready it'll show up, on the `Orders Not Piked` zone of the dining room. terminal. A waiter can collect the order and serve it by clicking `Serve`. <br> </br>
+![alt text](images/diningRoomNotPicked.png)
 
-4. When a order is served it'll show up on the Payment zone where it is ready to be paid. The person there can click `PAID` if the order has been paid and the Invoice will be printed on the Central Node. ![alt text](images/PaymentZone.png)
+4. When an order is served it'll show up on the Payment zone where it is ready to be paid. The person there can click `PAID` if the order has been paid and the Invoice will be printed on the Central Node.<br> </br>
+![alt text](images/PaymentZone.png)
