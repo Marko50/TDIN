@@ -48,4 +48,11 @@ public class CentralNodeManager : MarshalByRefObject{
             this.OrderServedEvent(this.orders[orderID]);
         }
     }
+
+    public void paidOrder(int orderID){
+        if(this.orders.ContainsKey(orderID)){
+            Console.WriteLine("\r\n\r\nOrder no " + orderID + " was paid.\r\n\r\n");
+            this.orders[orderID].Paid = true;    
+        }
+    }
 }

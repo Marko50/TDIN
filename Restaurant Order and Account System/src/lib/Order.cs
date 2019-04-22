@@ -8,8 +8,19 @@ public class Order{
     private int id;
     private int destinationTable = 1;
     private float price = 1;
+
+    private bool paid = false;
     
     List<OrderPart> orderParts = new List<OrderPart>();
+
+    public bool Paid{
+        get{
+            return paid;
+        }
+        set{
+            this.paid = value;
+        }
+    }
 
     public int Id{
         get{
