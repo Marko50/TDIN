@@ -52,6 +52,7 @@ public class CentralNodeManager : MarshalByRefObject{
     public void paidOrder(int orderID){
         if(this.orders.ContainsKey(orderID)){
             Console.WriteLine("\r\n\r\nOrder no " + orderID + " was paid.\r\n\r\n");
+            Console.WriteLine(this.orders[orderID].ToString());
             this.orders[orderID].Paid = true;    
         }
     }
