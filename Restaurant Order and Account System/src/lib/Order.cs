@@ -63,16 +63,6 @@ public class Order{
     public Order(){
         this.id = count;
         count++;
-        // OrderPart orderPartFirst = new OrderPart(this.id);
-        // OrderPart orderPartSecond = new OrderPart(this.id);
-        // OrderPart orderPartThird = new OrderPart(this.id);
-        // orderPartSecond.Type = "Kitchen";
-        // orderPartSecond.State = "Ready";
-        // orderPartThird.Type = "Kitchen";
-        // orderPartThird.State = "Ready";
-        // this.orderParts.Add(orderPartFirst);
-        // this.orderParts.Add(orderPartSecond);
-        // this.orderParts.Add(orderPartThird);
     }
 
     public override string ToString(){
@@ -80,6 +70,13 @@ public class Order{
         foreach (OrderPart orderPart in this.orderParts)
             ret += orderPart.ToString();
         return "\r\n\r\nOrder no " + this.id + "\nPrice" + this.price.ToString() + "\nFor table: " + this.destinationTable + "\r\n\r\n" + ret;
+    }
+
+    public string Invoice(){
+        string ret = "INVOICE\n Order number " + this.id + "\nPrice " + this.price.ToString() + "\n";
+        foreach (OrderPart orderPart in this.orderParts)
+            ret += orderPart.Invoice();
+        return ret;
     }
 
     public bool isReady(){

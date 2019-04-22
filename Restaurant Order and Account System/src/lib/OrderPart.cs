@@ -75,4 +75,8 @@ public class OrderPart{
         return "\r\n\r\nOrderPart no " + this.id + " from order no" + this.orderId + "\nDescription: " + this.description + "\nQuantity: " 
         + this.quantity + "\nType: " + this.type + "\nState: "  + this.state + "\r\n\r\n";
     }
+
+    public string Invoice(){
+        return "\t" + this.description + " x" + this.quantity + "\n";
+    }
 }
