@@ -1,0 +1,48 @@
+CSC=csc
+DLL=-target:library
+DLL_DIR=./out
+SRC_DIR=./src
+MKDIR=mkdir -p $(DLL_DIR)
+
+SERVICE_DIR= $(SRC_DIR)/service
+
+PRIME_NUMBER_CONTRACT_SRC= $(SERVICE_DIR)/PrimeNumberContract.cs
+PRIME_NUMBER_CONTRACT_LIB = $(DLL_DIR)/PrimeNumberContract.dll
+
+I_PRIME_NUMBER_SERVICE_SRC= $(SERVICE_DIR)/IPrimeNumberService.cs
+I_PRIME_NUMBER_SERVICE_LIB= $(DLL_DIR)/IPrimeNumberService.dll
+I_PRIME_NUMBER_SERVICE_DEPS = -reference:$(PRIME_NUMBER_CONTRACT_LIB)
+
+SERVER_SRC = $(SRC_DIR)/server/Server.cs
+SERVER_EXE= $(DLL_DIR)/Server.exe
+SERVER_DEPS= -reference:$(PRIME_NUMBER_CONTRACT_LIB) -reference:$(I_PRIME_NUMBER_SERVICE_LIB)
+
+CLIENT_SRC = $(SRC_DIR)/client/Client.cs
+CLIENT_EXE= $(DLL_DIR)/Client.exe
+CLIENT_DEPS= -reference:$(PRIME_NUMBER_CONTRACT_LIB) -reference:$(I_PRIME_NUMBER_SERVICE_LIB)
+
+
+all: $(SERVER_EXE) $(CLIENT_EXE)
+
+$(CLIENT_EXE): $(I_PRIME_NUMBER_SERVICE_LIB) $(PRIME_NUMBER_CONTRACT_LIB) $(CLIENT_SRC)
+	@$(MKDIR)
+	@$(CSC) $(CLIENT_DEPS) $(CLIENT_SRC) -out:$@
+	@echo "CLIENT --------> Compiled!"
+
+$(SERVER_EXE): $(I_PRIME_NUMBER_SERVICE_LIB) $(PRIME_NUMBER_CONTRACT_LIB) $(SERVER_SRC)
+	@$(MKDIR)
+	@$(CSC) $(SERVER_DEPS) $(SERVER_SRC) -out:$@
+	@echo "SERVER --------> Compiled!"
+
+$(I_PRIME_NUMBER_SERVICE_LIB): $(PRIME_NUMBER_CONTRACT_LIB)
+	@$(MKDIR)
+	@$(CSC) $(DLL) $(I_PRIME_NUMBER_SERVICE_DEPS) $(I_PRIME_NUMBER_SERVICE_SRC) -out:$@
+	@echo "I_PRIME_NUMBER_SERVICE --------> Compiled!"
+
+$(PRIME_NUMBER_CONTRACT_LIB): $(PRIME_NUMBER_CONTRACT_SRC)
+	@$(MKDIR)
+	@$(CSC) $(DLL) $^ -out:$@
+	@echo "PRIME_NUMBER_CONTRACT --------> Compiled!"
+
+clean:
+	@rm -rf $(DLL_DIR)
