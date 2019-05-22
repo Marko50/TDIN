@@ -1,0 +1,1 @@
+0:0:0:0:0:0:0:1 - - [23/May/2019:00:00:30 +0100] "GET /restServices/testServices/books HTTP/1.1" 200 68 http-bio-9090-exec-1 124
