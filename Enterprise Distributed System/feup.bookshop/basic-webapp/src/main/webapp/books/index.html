@@ -37,11 +37,11 @@
     </div>
 
     <div id="checkout" class="container">
-      <form class="form-inline mb-3" method="POST">
-        <div class="form-group mr-4">
-          <input type="email" class="form-control" id="email" placeholder="Enter email">
+      <form class="form-inline mb-3" action="">
+        <div class="form-group mr-4" id="append">
+          <input required type="email" class="form-control" id="email" placeholder="Enter email" name="email">
         </div>
-        <button type="submit" class="btn btn-primary"> Order now </button>
+        <button type="submit" id="purchase" class="btn btn-primary"> Order now </button>
       </form>
     </div>
   </div>

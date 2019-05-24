@@ -5,13 +5,31 @@ $(document).ready(function () {
     if (id) {
         $("#catalogue").css("display", "none");
         $("#checkout").css("display", "block");
+        $("#append").append(hiddenInput(id));
+        let email = $("#email").val();
+        $("#purchase").click(function (e) { 
+        $.ajax({
+            type: "POST",
+            url: "../restServices/orders",
+            data: JSON.stringify({"order" : {"bookID" : id, "email" : email}}),
+            contentType: "application/json; charset=utf-8",
+          }).done(function (msg) {
+              if(msg.success){
+                window.location.replace(window.location.origin + "/orders?id=" + msg.id);
+              }
+              else{
+                window.location.replace(window.location.origin + "/error?message=" + msg.information);
+              }
+          });
+          e.preventDefault();     
+        });
         $.ajax({
             type: "GET",
-            url: "../restServices/testServices/books/" + id
+            url: "../restServices/books/" + id
           }).done(function (msg) {
             if (msg.success) {
               msg.information.forEach(book => {
-                $("#checkout").append(formBookCardCheckout(book.Id, book.Title, book.Author, book.Price, book.Stock));
+                $("#checkout").append(formBookCardCheckout(book.id, book.title, book.author, book.price, book.stock));
               });
             }
             else{
@@ -24,11 +42,11 @@ $(document).ready(function () {
         $("#catalogue").css("display", "block");
         $.ajax({
             type: "GET",
-            url: "../restServices/testServices/books"
+            url: "../restServices/books"
           }).done(function (msg) {
             if (msg.success) {
               msg.information.forEach(book => {
-                $("#response").append(formBookCard(book.Id, book.Title, book.Author, book.Price, book.Stock));
+                $("#response").append(formBookCard(book.id, book.title, book.author, book.price, book.stock));
               });
             }
             else{
@@ -48,5 +66,9 @@ function formBookCardCheckout(id, title, author, price, stock) {
 
 function formErrorMessage(information){
     return "<div>"+ information +"</div>"
+}
+
+function hiddenInput(id){
+  return "<input type='hidden' class='form-control' id='bookID' name='bookID' value='" + id + "'>"
 }
 

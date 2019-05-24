@@ -38,10 +38,9 @@
   <context:annotation-config />
   <context:component-scan base-package="org.apache.tomcat.maven"/>
 
-  <jaxrs:server id="testServices" address="/testServices">
+  <jaxrs:server id="testServices" address="/">
 
     <jaxrs:serviceBeans>
-      <ref bean="helloService#default"/>
       <ref bean="bookService#default"/>
       <ref bean="orderService#default"/>
     </jaxrs:serviceBeans>
