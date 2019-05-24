@@ -18,4 +18,9 @@ public interface BookService
     @GET
     @Produces( { MediaType.APPLICATION_JSON } )
     String getAllBooks();
+
+    @GET
+    @Path("/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    String getBook(@PathParam("id") String id);
 }
