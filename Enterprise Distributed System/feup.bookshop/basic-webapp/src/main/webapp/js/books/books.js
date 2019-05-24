@@ -9,7 +9,6 @@ $(document).ready(function () {
             type: "GET",
             url: "../restServices/testServices/books/" + id
           }).done(function (msg) {
-            console.log(msg);
             if (msg.success) {
               msg.information.forEach(book => {
                 $("#checkout").append(formBookCardCheckout(book.Id, book.Title, book.Author, book.Price, book.Stock));
@@ -27,7 +26,6 @@ $(document).ready(function () {
             type: "GET",
             url: "../restServices/testServices/books"
           }).done(function (msg) {
-            console.log(msg);
             if (msg.success) {
               msg.information.forEach(book => {
                 $("#response").append(formBookCard(book.Id, book.Title, book.Author, book.Price, book.Stock));

@@ -42,7 +42,8 @@
 
     <jaxrs:serviceBeans>
       <ref bean="helloService#default"/>
-       <ref bean="bookService#default"/>
+      <ref bean="bookService#default"/>
+      <ref bean="orderService#default"/>
     </jaxrs:serviceBeans>
 
    </jaxrs:server>

@@ -12,8 +12,8 @@ public class GenericController implements FacadeControllerREST {
     public static final String USER = "root";
     public static final String PASSWORD = "mysql";
 
-    private String tableName;
-    private Connection connection;
+    protected String tableName;
+    protected Connection connection;
 
     public GenericController(String tname) throws SQLException{
         this.tableName = tname;
