@@ -9,8 +9,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
+import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
 import com.google.gson.Gson;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.tomcat.maven.tomcat.api.OrderService;
 import org.apache.tomcat.maven.tomcat.controllers.BookController;
 import org.apache.tomcat.maven.tomcat.controllers.GenericController;
@@ -49,6 +59,13 @@ public class DefaultOrderService
                 value.put("success", false);
                 value.put("information", "500 Internal Server Error. Error updating book stock for book "+ order.bookID);
                 return gson.toJson(value);
+            }
+            else if(status.equals("Waiting expedition")){
+                if(!askWarehouse(order)){
+                    value.put("success", false);
+                    value.put("information", "500 Internal Server Error");
+                    return gson.toJson(value);
+                }
             }
             int orderResponse = orderController.insert(order.email, bookIDParsed, status);
             if (orderResponse > 0) {
@@ -135,5 +152,20 @@ public class DefaultOrderService
         }
     }
 
-    
+    private boolean askWarehouse(Order order){
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+        try {
+            Connection connection = connectionFactory.createConnection();
+            Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+            Queue queue = session.createQueue("WarehouseQueue");
+            MessageProducer messageProducer = session.createProducer(queue);
+            TextMessage textMessage = session.createTextMessage();
+            textMessage.setText(order.email + ":" + order.bookID);
+            messageProducer.send(textMessage);
+            return true;
+        } catch (JMSException e) {
+            System.out.println("Error initializing queue. " + e.getMessage());
+            return false;
+        }
+    }
 }

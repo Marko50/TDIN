@@ -1,21 +1,21 @@
-package queue;
+package pom.queue;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
-import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.broker.BrokerFactory;
-import org.apache.activemq.broker.BrokerService;
-import org.fusesource.mqtt.cli.Listener;
+
+
+
 
 public class WarehouseQueue implements ServletContextListener, MessageListener {
     private Connection connection;
@@ -41,9 +41,15 @@ public class WarehouseQueue implements ServletContextListener, MessageListener {
             System.out.println("Error initializing queue. " + e.getMessage());
         }
     }
-
+;
     @Override
-    public void onMessage(Message arg0) {
-        System.out.println("Message received");
+    public void onMessage(Message m) {
+        TextMessage object = (TextMessage) m;
+        try {
+            String order = object.getText();
+            System.out.println("Message received: " + order);
+        } catch (JMSException e) {
+            System.out.println("Error receiving order. " + e.getMessage());
+        }
     }
 }
