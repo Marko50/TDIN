@@ -6,8 +6,8 @@ $(document).ready(function () {
         $("#catalogue").css("display", "none");
         $("#checkout").css("display", "block");
         $("#append").append(hiddenInput(id));
-        let email = $("#email").val();
         $("#purchase").click(function (e) { 
+        let email = $("#email").val();
         $.ajax({
             type: "POST",
             url: "../restServices/orders",

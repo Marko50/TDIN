@@ -2,15 +2,18 @@ package org.apache.tomcat.maven.tomcat.api.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
 
 import org.apache.tomcat.maven.tomcat.api.OrderService;
 import org.apache.tomcat.maven.tomcat.controllers.BookController;
+import org.apache.tomcat.maven.tomcat.controllers.GenericController;
 import org.apache.tomcat.maven.tomcat.controllers.OrderController;
 import org.apache.tomcat.maven.tomcat.models.Order;
 import org.springframework.stereotype.Service;
@@ -69,6 +72,46 @@ public class DefaultOrderService
             return gson.toJson(value);
         }
     }
+    
+    public String getOrder(String id) {
+        Gson gson = new Gson();
+        List<Order> list = new ArrayList<Order>();
+        Map<String, Object> value = new HashMap<String,Object>();
+        try {
+            int id_parsed = Integer.parseInt(id);
+            GenericController genericController = new GenericController("orders");
+            ResultSet resultSet = genericController.find(id_parsed);
+            if (resultSet == null){
+                value.put("success", false);
+                value.put("information", "500 Internal Server Error");
+                return gson.toJson(value);
+            }
+            while (resultSet.next()) {
+                int orderID = resultSet.getInt("id");
+                String email = resultSet.getString("email");
+                int bookID = resultSet.getInt("bookID");
+                String state = resultSet.getString("state");
+                list.add(new Order(orderID, email, Integer.toString(bookID), state));
+            }
+            if(list.isEmpty()){
+                value.put("success", false);
+                value.put("information", "404 Not found");
+                return gson.toJson(value);
+            }
+        }catch (NumberFormatException e) {
+            value.put("success", false);
+            value.put("information", "400 Bad parameteres error" + e.getMessage());
+            System.out.println("Error 404 Bad params:" + id + " when fetching order from the Database: " + e.getMessage());
+            return gson.toJson(value);
+        }catch (SQLException e) {
+            value.put("success", false);
+            value.put("information", "500 Internal Server Error" + e.getMessage());
+            return gson.toJson(value);
+        }    
+        value.put("success", true);
+        value.put("information", list);
+        return gson.toJson(value);
+    }
 
 
     private String updateBookStock(ResultSet book){
@@ -92,4 +135,5 @@ public class DefaultOrderService
         }
     }
 
+    
 }
