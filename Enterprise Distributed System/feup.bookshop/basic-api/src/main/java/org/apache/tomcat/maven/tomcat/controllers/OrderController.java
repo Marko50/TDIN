@@ -37,7 +37,7 @@ public class OrderController extends GenericController{
     }
 
     public int update(int id, int bookID, String email, String state){
-        String query = "UPDATE " + DB_NAME + "." + this.tableName + " SET email = ? state = ? bookID = ? WHERE id = ?";
+        String query = "UPDATE " + DB_NAME + "." + this.tableName + " SET email = ? , state = ? , bookID = ? WHERE id = ?";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, email);

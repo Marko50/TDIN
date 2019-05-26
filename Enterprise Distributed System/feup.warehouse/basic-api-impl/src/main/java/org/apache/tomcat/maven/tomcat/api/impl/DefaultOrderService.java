@@ -104,9 +104,9 @@ public class DefaultOrderService implements OrderService {
             System.out.println(second.toString());
             OutputStream os = con.getOutputStream();
             byte[] input = second.toString().getBytes("utf-8");
+            os.write(input, 0, input.length);
             int r = con.getResponseCode();
             System.out.println(r);
-            os.write(input, 0, input.length);
             os.close();
         } catch (MalformedURLException e) {
             System.out.println("Bookstore url is malformed: " + e.getMessage());
