@@ -1,2 +1,4 @@
-target/
-.vscode
+.vscode/
+basic-api/target
+basic-api-impl/target
+basic-webapp/target
