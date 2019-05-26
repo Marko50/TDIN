@@ -33,4 +33,10 @@ public interface OrderService
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
     String updateOrder(final Order order);
+
+    @PUT
+    @Path("/warehouse")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    String updateOrderWarehouse(final Order order);
 }

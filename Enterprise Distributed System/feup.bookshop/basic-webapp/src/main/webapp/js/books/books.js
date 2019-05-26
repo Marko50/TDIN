@@ -8,10 +8,11 @@ $(document).ready(function () {
         $("#append").append(hiddenInput(id));
         $("#purchase").click(function (e) { 
         let email = $("#email").val();
+        let quantity = $("#quantity").val();
         $.ajax({
             type: "POST",
             url: "restServices/orders",
-            data: JSON.stringify({"order" : {"bookID" : id, "email" : email}}),
+            data: JSON.stringify({"order" : {"bookID" : id, "email" : email, "quantity" : quantity}}),
             contentType: "application/json; charset=utf-8",
           }).done(function (msg) {
               if(msg.success){

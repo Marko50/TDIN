@@ -13,13 +13,14 @@ public class OrderController extends DatabaseController{
         super(tname);
     }
 
-    public int insert(int id ,String email, int bookID){
-        String query = "INSERT INTO " + DB_NAME + "." + this.tableName + " (id, email, bookID) VALUES (?, ?, ?)";
+    public int insert(int id ,String email, int bookID, int quantity){
+        String query = "INSERT INTO " + DB_NAME + "." + this.tableName + " (id, email, bookID, quantity) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, email);
             preparedStatement.setInt(3, bookID);
+            preparedStatement.setInt(4, quantity);
             if(preparedStatement.executeUpdate() > 0){
                 ResultSet rs = preparedStatement.getGeneratedKeys();
                 if(rs.next())

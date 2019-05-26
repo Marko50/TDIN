@@ -40,6 +40,7 @@ public class DefaultOrderService
         Map<String, Object> value = new HashMap<String,Object>();  
         try {
             int bookIDParsed = Integer.parseInt(order.bookID);
+            int quantity = Integer.parseInt(order.quantity);
             OrderController orderController = new OrderController("orders");
             BookController bookController = new BookController("books");
             ResultSet resultSet = bookController.find(bookIDParsed);
@@ -53,13 +54,13 @@ public class DefaultOrderService
                 value.put("information", "404 Not found");
                 return gson.toJson(value);
             }
-            String status = updateBookStock(resultSet);
+            String status = updateBookStock(resultSet, Integer.parseInt(order.quantity));
             if(status.equals("Error")){
                 value.put("success", false);
                 value.put("information", "500 Internal Server Error. Error updating book stock for book "+ order.bookID);
                 return gson.toJson(value);
             }
-            int orderResponse = orderController.insert(order.email, bookIDParsed, status);
+            int orderResponse = orderController.insert(order.email, bookIDParsed, status, quantity);
             if (orderResponse > 0) {
                 if(status.equals("Waiting expedition")){
                     order.id = orderResponse;
@@ -108,7 +109,8 @@ public class DefaultOrderService
                 String email = resultSet.getString("email");
                 int bookID = resultSet.getInt("bookID");
                 String state = resultSet.getString("state");
-                list.add(new Order(orderID, email, Integer.toString(bookID), state));
+                int quantity = resultSet.getInt("quantity");
+                list.add(new Order(orderID, email, Integer.toString(bookID), state, Integer.toString(quantity)));
             }
             if(list.isEmpty()){
                 value.put("success", false);
@@ -131,13 +133,13 @@ public class DefaultOrderService
     }
 
     public String updateOrder(Order order) {
-        System.out.println("order " + order.id + " " + order.email + " " + order.state + " " + order.bookID);
+        System.out.println("order " + order.id + " " + order.email + " " + order.state + " " + order.bookID + " " + order.quantity);
         Gson gson = new Gson();
         Map<String, Object> value = new HashMap<String,Object>();
         try {
             OrderController orderController = new OrderController("orders");
             BookController bookController = new BookController("books");
-            if (!orderController.update(order.id, Integer.parseInt(order.bookID), order.email, order.state)) {
+            if (!orderController.update(order.id, Integer.parseInt(order.bookID), order.email, order.state, Integer.parseInt(order.quantity))) {
                 value.put("success", false);
                 value.put("information", "500 Internal Server Error");
                 return gson.toJson(value);
@@ -147,6 +149,30 @@ public class DefaultOrderService
                 value.put("information", "500 Internal Server Error");
                 return gson.toJson(value); 
             }
+            value.put("success", true);
+            value.put("information", order.id);
+            return gson.toJson(value);
+        } catch (SQLException e) {
+            value.put("success", false);
+            value.put("information", "500 Internal Server Error" + e.getMessage());
+            return gson.toJson(value);
+        }
+    }
+
+    public String updateOrderWarehouse(Order order) {
+        System.out.println("order " + order.id + " " + order.email + " " + order.state + " " + order.bookID + " " + order.quantity);
+        Gson gson = new Gson();
+        Map<String, Object> value = new HashMap<String,Object>();
+        try {
+            OrderController orderController = new OrderController("orders");
+            BookController bookController = new BookController("books");
+            if (!orderController.update(order.id, Integer.parseInt(order.bookID), order.email, order.state, Integer.parseInt(order.quantity))) {
+                value.put("success", false);
+                value.put("information", "500 Internal Server Error");
+                return gson.toJson(value);
+            }
+            int orderQuantity = Integer.parseInt(order.quantity) + 10;
+            bookController.updateBookStock(Integer.parseInt(order.bookID), orderQuantity);
             value.put("success", true);
             value.put("information", order.id);
             return gson.toJson(value);
@@ -174,7 +200,8 @@ public class DefaultOrderService
                 String email = resultSet.getString("email");
                 int bookID = resultSet.getInt("bookID");
                 String state = resultSet.getString("state");
-                list.add(new Order(id, email, Integer.toString(bookID), state));
+                int quantity = resultSet.getInt("quantity");
+                list.add(new Order(id, email, Integer.toString(bookID), state, Integer.toString(quantity)));
             }
         } catch (SQLException e) {
             value.put("success", false);
@@ -187,13 +214,13 @@ public class DefaultOrderService
     }
 
 
-    private String updateBookStock(ResultSet book){
+    private String updateBookStock(ResultSet book, int quantity){
         try {
             BookController bookController = new BookController("books");
             int stock = book.getInt("stock");
-            if ((stock - 1 ) >= 0) {
+            if ((stock - quantity ) >= 0) {
                 int id = book.getInt("id");
-                bookController.updateBookStock(id, stock - 1);
+                bookController.updateBookStock(id, stock - quantity);
                 Date currentDate = new Date();
                 Calendar c = Calendar.getInstance();
                 c.setTime(currentDate);
@@ -216,7 +243,8 @@ public class DefaultOrderService
             Queue queue = session.createQueue("WarehouseQueue");
             MessageProducer messageProducer = session.createProducer(queue);
             TextMessage textMessage = session.createTextMessage();
-            textMessage.setText(order.id + ":" + order.email + ":" + order.bookID);
+            int orderQuantity = Integer.parseInt(order.quantity) + 10;
+            textMessage.setText(order.id + ":" + order.email + ":" + order.bookID+ ":" + orderQuantity);
             messageProducer.send(textMessage);
             return true;
         } catch (JMSException e) {

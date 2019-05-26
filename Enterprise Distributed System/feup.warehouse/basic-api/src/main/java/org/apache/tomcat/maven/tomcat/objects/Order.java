@@ -12,16 +12,18 @@ public class Order implements Serializable{
     @XmlElement public String email;
     @XmlElement public String bookID;
     @XmlElement public String state;
+    @XmlElement public String quantity;
 
     public Order(){
         
     }
 
-    public Order(int i, String e, String b, String s){
+    public Order(int i, String e, String b, String s, String quantity){
         this.id = i;
         this.email = e;
         this.bookID = b;
         this.state = s;
+        this.quantity = quantity;
     }
 
 }

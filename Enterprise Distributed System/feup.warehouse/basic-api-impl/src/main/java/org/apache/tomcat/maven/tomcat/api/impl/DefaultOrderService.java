@@ -44,7 +44,8 @@ public class DefaultOrderService implements OrderService {
                 String email = resultSet.getString("email");
                 int bookID = resultSet.getInt("bookID");
                 String state = resultSet.getString("state");
-                list.add(new Order(id, email, Integer.toString(bookID), state));
+                int quantity = resultSet.getInt("quantity");
+                list.add(new Order(id, email, Integer.toString(bookID), state, Integer.toString(quantity)));
             }
         } catch (SQLException e) {
             value.put("success", false);
@@ -84,7 +85,7 @@ public class DefaultOrderService implements OrderService {
         try {
             JSONObject first = new JSONObject();
             JSONObject second = new JSONObject();
-            URL url = new URL("http://localhost:9090/restServices/orders");
+            URL url = new URL("http://localhost:9090/restServices/orders/warehouse");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("PUT");
             con.setDoOutput(true);
@@ -94,6 +95,8 @@ public class DefaultOrderService implements OrderService {
             first.put("id", order.id);
             first.put("bookID", order.bookID);
             first.put("email", order.email);
+            int orderQuantity = Integer.parseInt(order.quantity) - 10;
+            first.put("quantity", orderQuantity);
             Date currentDate = new Date();
             Calendar c = Calendar.getInstance();
             c.setTime(currentDate);
