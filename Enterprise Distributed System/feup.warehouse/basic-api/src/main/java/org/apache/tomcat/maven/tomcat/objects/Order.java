@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Order implements Serializable{
     private static final long serialVersionUID = -3954868138677770828L;
     @XmlElement public int id;
-    public String email;
-    public String bookID;
-    public String state;
+    @XmlElement public String email;
+    @XmlElement public String bookID;
+    @XmlElement public String state;
 
     public Order(){
         

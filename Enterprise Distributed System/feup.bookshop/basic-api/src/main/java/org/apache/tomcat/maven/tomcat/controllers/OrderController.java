@@ -36,12 +36,14 @@ public class OrderController extends GenericController{
         }
     }
 
-    public int update(int id, String state){
-        String query = "UPDATE " + DB_NAME + "." + this.tableName + " SET state = ? WHERE id = ?";
+    public int update(int id, int bookID, String email, String state){
+        String query = "UPDATE " + DB_NAME + "." + this.tableName + " SET email = ? state = ? bookID = ? WHERE id = ?";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, state);
-            preparedStatement.setInt(2, id);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, state);
+            preparedStatement.setInt(3, bookID);
+            preparedStatement.setInt(4, id);
             if(preparedStatement.executeUpdate() > 0){
                 ResultSet rs = preparedStatement.getGeneratedKeys();
                 if(rs.next())
@@ -52,7 +54,7 @@ public class OrderController extends GenericController{
                 return 0;
             }
         } catch (SQLException e) {
-            System.out.println("Error inserting product no + " + id + " with state " + state + ": " + e.getMessage());
+            System.out.println("Error updating product no + " + id + ". " + e.getMessage());
             return -1;
         }
     }

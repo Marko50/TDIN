@@ -10,12 +10,12 @@ $(document).ready(function () {
                         $.ajax({
                             type: "DELETE",
                             url: "restServices/testServices/orders",
-                            data: JSON.stringify({"order": {"id" : order.id}}),
+                            data: JSON.stringify({"order": {"id" : order.id, "email" : order.email, "bookID": order.bookID, "state": order.state }}),
                             contentType: "application/json; charset=utf-8",
                             success: function (response) {
                                 console.log(response);
                                if(response.success){
-                                    $("#button_"+order.id).remove();
+                                    $("#card_"+order.id).remove();
                                }
                             }
                         });
@@ -35,5 +35,5 @@ function formErrorMessage(information){
 }
 
 function formOrderCard(id, email, bookID, state) {  
-    return "<div " + "id='button_" + id +"' class='card' style='width: 18rem;'> <div class='card-body'> <h5 class='card-title'>" + "Order number " + id + "</h5> <h6 class='card-subtitle mb-2 text-muted'> by " + email + "</h6> <p class='card-text'> Book ordered was " + bookID + ". Current state is " + state +  "</p>" + "<button class='btn btn-primary'> Dispatch now </button>" + "</div> </div>"
+    return "<div " + "id='card_" + id +"' class='card' style='width: 18rem;'> <div class='card-body'> <h5 class='card-title'>" + "Order number " + id + "</h5> <h6 class='card-subtitle mb-2 text-muted'> by " + email + "</h6> <p class='card-text'> Book ordered was " + bookID + ". Current state is " + state +  "</p>" + "<button " + "id='button_" + id +"' class='btn btn-primary'> Dispatch now </button>" + "</div> </div>"
 }

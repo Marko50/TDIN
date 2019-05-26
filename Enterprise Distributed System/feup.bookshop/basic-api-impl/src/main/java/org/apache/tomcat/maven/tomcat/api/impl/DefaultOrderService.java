@@ -130,6 +130,62 @@ public class DefaultOrderService
         return gson.toJson(value);
     }
 
+    public String updateOrder(Order order) {
+        System.out.println("order " + order.id + " " + order.email + " " + order.state + " " + order.bookID);
+        Gson gson = new Gson();
+        Map<String, Object> value = new HashMap<String,Object>();
+        try {
+            OrderController orderController = new OrderController("orders");
+            int id = orderController.update(order.id, Integer.parseInt(order.bookID), order.email, order.state);
+            if(id == 0){
+                value.put("success", false);
+                value.put("information", "404 Not found");
+                return gson.toJson(value);
+            }
+            else if(id < 0){
+                value.put("success", false);
+                value.put("information", "500 Internal Server Error");
+                return gson.toJson(value);
+            }
+            value.put("success", true);
+            value.put("information", id);
+            return gson.toJson(value);
+        } catch (SQLException e) {
+            value.put("success", false);
+            value.put("information", "500 Internal Server Error" + e.getMessage());
+            return gson.toJson(value);
+        }
+    }
+
+    public String getAllOrders() {
+        Gson gson = new Gson();
+        List<Order> list = new ArrayList<Order>();
+        Map<String, Object> value = new HashMap<String, Object>();
+        try {
+            OrderController genericController = new OrderController("orders");
+            ResultSet resultSet = genericController.findAll();
+            if (resultSet == null) {
+                value.put("success", false);
+                value.put("information", "500 Internal Server Error");
+                return gson.toJson(value);
+            }
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String email = resultSet.getString("email");
+                int bookID = resultSet.getInt("bookID");
+                String state = resultSet.getString("state");
+                list.add(new Order(id, email, Integer.toString(bookID), state));
+            }
+        } catch (SQLException e) {
+            value.put("success", false);
+            value.put("information", "500 Internal Server Error" + e.getMessage());
+            return gson.toJson(value);
+        }
+        value.put("success", true);
+        value.put("information", list);
+        return gson.toJson(value);
+    }
+
 
     private String updateBookStock(ResultSet book){
         try {
@@ -168,4 +224,8 @@ public class DefaultOrderService
             return false;
         }
     }
+
+    
+
+    
 }
