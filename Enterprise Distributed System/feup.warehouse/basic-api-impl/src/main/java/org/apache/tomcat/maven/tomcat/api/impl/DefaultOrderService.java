@@ -46,4 +46,19 @@ public class DefaultOrderService implements OrderService{
         return gson.toJson(value);
     }
 
+    public String deleteOrder(Order order) {
+        Gson gson = new Gson();
+        Map<String, Object> value = new HashMap<String,Object>();
+        try {
+            OrderController genericController = new OrderController("orders");
+            genericController.delete(order.id);
+        } catch (SQLException e) {
+            value.put("success", false);
+            value.put("information", "500 Internal Server Error" + e.getMessage());
+            return gson.toJson(value);
+        }    
+        value.put("success", true);
+        return gson.toJson(value);
+    }
+
 }

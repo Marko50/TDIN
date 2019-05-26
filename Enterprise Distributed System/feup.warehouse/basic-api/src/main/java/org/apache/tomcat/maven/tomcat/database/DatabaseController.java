@@ -47,4 +47,17 @@ public abstract class DatabaseController{
         }
     }
 
+    public int delete(int id){
+        String query = "DELETE FROM " + DB_NAME + "." + tableName + " WHERE id=?";
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
+            return 0;
+        } catch (SQLException e) {
+            System.out.println("Error deleting book with id=" + id + " from the Database: " + e.getMessage());
+            return -1;
+        }
+    }
+
 }

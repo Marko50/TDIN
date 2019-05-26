@@ -45,10 +45,11 @@ public class WarehouseQueue implements ServletContextListener, MessageListener {
         try {
             String order = object.getText();
             String[] orderParts = order.split(":");
-            String email = orderParts[0];
-            String bookID = orderParts[1];
+            String id = orderParts[0];
+            String email = orderParts[1];
+            String bookID = orderParts[2];
             OrderController orderController = new OrderController("orders");
-            orderController.insert(email, Integer.parseInt(bookID));
+            orderController.insert(Integer.parseInt(id), email, Integer.parseInt(bookID));
             System.out.println("Message received: " + order);
         } catch (JMSException e) {
             System.out.println("Error receiving order. " + e.getMessage());

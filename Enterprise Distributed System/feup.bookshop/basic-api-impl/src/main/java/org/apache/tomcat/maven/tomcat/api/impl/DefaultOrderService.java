@@ -59,15 +59,16 @@ public class DefaultOrderService
                 value.put("information", "500 Internal Server Error. Error updating book stock for book "+ order.bookID);
                 return gson.toJson(value);
             }
-            else if(status.equals("Waiting expedition")){
-                if(!askWarehouse(order)){
-                    value.put("success", false);
-                    value.put("information", "500 Internal Server Error");
-                    return gson.toJson(value);
-                }
-            }
             int orderResponse = orderController.insert(order.email, bookIDParsed, status);
             if (orderResponse > 0) {
+                if(status.equals("Waiting expedition")){
+                    order.id = orderResponse;
+                    if(!askWarehouse(order)){
+                        value.put("success", false);
+                        value.put("information", "500 Internal Server Error");
+                        return gson.toJson(value);
+                    }
+                }
                 value.put("success", true);
                 value.put("information", "200 OK. Order created with " + order.email + " and " + status + " for book " + bookIDParsed);
                 value.put("id", orderResponse);
@@ -159,7 +160,7 @@ public class DefaultOrderService
             Queue queue = session.createQueue("WarehouseQueue");
             MessageProducer messageProducer = session.createProducer(queue);
             TextMessage textMessage = session.createTextMessage();
-            textMessage.setText(order.email + ":" + order.bookID);
+            textMessage.setText(order.id + ":" + order.email + ":" + order.bookID);
             messageProducer.send(textMessage);
             return true;
         } catch (JMSException e) {

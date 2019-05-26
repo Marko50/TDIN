@@ -35,4 +35,25 @@ public class OrderController extends GenericController{
             return -1;
         }
     }
+
+    public int update(int id, String state){
+        String query = "UPDATE " + DB_NAME + "." + this.tableName + " SET state = ? WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, state);
+            preparedStatement.setInt(2, id);
+            if(preparedStatement.executeUpdate() > 0){
+                ResultSet rs = preparedStatement.getGeneratedKeys();
+                if(rs.next())
+                    return rs.getInt(1);
+                else return 0;    
+            }
+            else{
+                return 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error inserting product no + " + id + " with state " + state + ": " + e.getMessage());
+            return -1;
+        }
+    }
 }

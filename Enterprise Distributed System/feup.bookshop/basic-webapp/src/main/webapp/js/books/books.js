@@ -10,7 +10,7 @@ $(document).ready(function () {
         let email = $("#email").val();
         $.ajax({
             type: "POST",
-            url: "../restServices/orders",
+            url: "restServices/orders",
             data: JSON.stringify({"order" : {"bookID" : id, "email" : email}}),
             contentType: "application/json; charset=utf-8",
           }).done(function (msg) {
@@ -25,7 +25,7 @@ $(document).ready(function () {
         });
         $.ajax({
             type: "GET",
-            url: "../restServices/books/" + id
+            url: "restServices/books/" + id
           }).done(function (msg) {
             if (msg.success) {
               msg.information.forEach(book => {
@@ -42,7 +42,7 @@ $(document).ready(function () {
         $("#catalogue").css("display", "block");
         $.ajax({
             type: "GET",
-            url: "../restServices/books"
+            url: "restServices/books"
           }).done(function (msg) {
             if (msg.success) {
               msg.information.forEach(book => {
