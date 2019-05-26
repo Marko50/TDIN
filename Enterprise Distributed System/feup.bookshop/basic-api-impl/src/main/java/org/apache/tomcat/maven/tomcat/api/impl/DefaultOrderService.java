@@ -136,19 +136,19 @@ public class DefaultOrderService
         Map<String, Object> value = new HashMap<String,Object>();
         try {
             OrderController orderController = new OrderController("orders");
-            int id = orderController.update(order.id, Integer.parseInt(order.bookID), order.email, order.state);
-            if(id == 0){
-                value.put("success", false);
-                value.put("information", "404 Not found");
-                return gson.toJson(value);
-            }
-            else if(id < 0){
+            BookController bookController = new BookController("books");
+            if (!orderController.update(order.id, Integer.parseInt(order.bookID), order.email, order.state)) {
                 value.put("success", false);
                 value.put("information", "500 Internal Server Error");
                 return gson.toJson(value);
             }
+            if(!bookController.updateBookStock(Integer.parseInt(order.bookID) , 10)){
+                value.put("success", false);
+                value.put("information", "500 Internal Server Error");
+                return gson.toJson(value); 
+            }
             value.put("success", true);
-            value.put("information", id);
+            value.put("information", order.id);
             return gson.toJson(value);
         } catch (SQLException e) {
             value.put("success", false);

@@ -36,7 +36,7 @@ public class OrderController extends GenericController{
         }
     }
 
-    public int update(int id, int bookID, String email, String state){
+    public boolean update(int id, int bookID, String email, String state){
         String query = "UPDATE " + DB_NAME + "." + this.tableName + " SET email = ? , state = ? , bookID = ? WHERE id = ?";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
@@ -44,18 +44,11 @@ public class OrderController extends GenericController{
             preparedStatement.setString(2, state);
             preparedStatement.setInt(3, bookID);
             preparedStatement.setInt(4, id);
-            if(preparedStatement.executeUpdate() > 0){
-                ResultSet rs = preparedStatement.getGeneratedKeys();
-                if(rs.next())
-                    return rs.getInt(1);
-                else return 0;    
-            }
-            else{
-                return 0;
-            }
+            preparedStatement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             System.out.println("Error updating product no + " + id + ". " + e.getMessage());
-            return -1;
+            return false;
         }
     }
 }

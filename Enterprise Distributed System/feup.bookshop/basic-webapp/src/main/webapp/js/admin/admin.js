@@ -6,10 +6,26 @@ $(document).ready(function () {
             if(response.success){
                 response.information.forEach(order => {
                    $("#response").append(formOrderCard(order.id, order.email, order.bookID, order.state));  
-                });
-                $("#button_" + order.id).click(function (e) { 
-                    e.preventDefault();
-                    
+                   var today = new Date();
+                   var dd = String(today.getDate()).padStart(2, '0');
+                   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                   var yyyy = today.getFullYear();
+                   $("#button_" + order.id).click(function (e) { 
+                       $.ajax({
+                           type: "PUT",
+                           url: "../restServices/orders",
+                           data: JSON.stringify({"order" : {"id" : order.id, "email" : order.email, "bookID" : order.bookID, "state" : mm + '/' + dd + '/' + yyyy}}),
+                           contentType: "application/json; charset=utf-8"
+                       }).done(function (msg) {
+                            if(msg.success){
+                                window.location.reload();
+                            }
+                            else{
+                                window.location.replace(window.location.origin + "/error?message=" + msg.information);
+                            }
+                        });
+                       e.preventDefault();
+                   });
                 });
             }
             else{
