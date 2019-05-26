@@ -51,7 +51,11 @@ public class DefaultOrderService implements OrderService{
         Map<String, Object> value = new HashMap<String,Object>();
         try {
             OrderController genericController = new OrderController("orders");
-            genericController.delete(order.id);
+            if(!genericController.delete(order.id) ){
+                value.put("success", false);
+                value.put("information", "500 Internal Server Error");
+                return gson.toJson(value);
+            }
         } catch (SQLException e) {
             value.put("success", false);
             value.put("information", "500 Internal Server Error" + e.getMessage());
