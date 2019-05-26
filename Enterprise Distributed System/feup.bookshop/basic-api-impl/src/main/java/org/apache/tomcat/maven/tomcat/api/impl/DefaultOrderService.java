@@ -24,6 +24,7 @@ import org.apache.tomcat.maven.tomcat.api.OrderService;
 import org.apache.tomcat.maven.tomcat.controllers.BookController;
 import org.apache.tomcat.maven.tomcat.controllers.GenericController;
 import org.apache.tomcat.maven.tomcat.controllers.OrderController;
+import org.apache.tomcat.maven.tomcat.emails.Email;
 import org.apache.tomcat.maven.tomcat.models.Order;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,12 @@ public class DefaultOrderService
                         value.put("information", "500 Internal Server Error");
                         return gson.toJson(value);
                     }
+                }
+                Email email = new Email(order.email);
+                if(!email.sendEmail("Your order was create with id " + order.id + " and its current status his " + status + ". Book ordered was "+ order.bookID + ", x" + order.quantity + " times.")){
+                    value.put("success", false);
+                    value.put("information", "500 Internal Server Error. Error sending email on order creation");
+                    return gson.toJson(value);
                 }
                 value.put("success", true);
                 value.put("information", "200 OK. Order created with " + order.email + " and " + status + " for book " + bookIDParsed);
@@ -148,6 +155,12 @@ public class DefaultOrderService
                 value.put("success", false);
                 value.put("information", "500 Internal Server Error");
                 return gson.toJson(value); 
+            }
+            Email email = new Email(order.email);
+            if(!email.sendEmail("Your order with id " + order.id + "was satisfied ")){
+                value.put("success", false);
+                value.put("information", "500 Internal Server Error. Error sending email on order update");
+                return gson.toJson(value);
             }
             value.put("success", true);
             value.put("information", order.id);
