@@ -51,7 +51,7 @@ You need to garantee you have these dependencies installed on your machine:
 
 1. `cd cd apache-activemq-5.15.9-bin/apache-activemq-5.15.9/bin/` and `sudo ./activemq console` to start the message queue service.
 2. `sudo systemctl start mariadb` or any related `mysql` package to start the `mysql server`
-3. `mysql -u username -p new_database < database.sql` will create the database schema.
+3. `mysql -u username -p bookstore < database.sql` will create the database schema.
 4. `cd feup.bookshop` and `mvn tomcat7:run`
 5. `cd feup.warehouse` and `mvn tomcat7:run`
 
